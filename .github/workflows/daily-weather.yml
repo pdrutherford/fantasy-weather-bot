@@ -2,9 +2,9 @@ name: Daily Weather Update
 
 on:
   schedule:
-    # Run daily at 12:00 PM UTC (adjust timezone as needed)
-    # This is 8:00 AM EST / 7:00 AM EDT
-    - cron: "0 12 * * *"
+    # Run daily at 12:00 AM New York time (Eastern Time)
+    # This is 5:00 AM UTC during EST, 4:00 AM UTC during EDT
+    - cron: "0 5 * * *"
 
   # Allow manual triggering for testing
   workflow_dispatch:
