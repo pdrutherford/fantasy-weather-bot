@@ -9,10 +9,13 @@ module.exports = {
     try {
       const weather = weatherService.getWeatherUpdate();
       const weatherMessage =
-        `🌤️ **Today's Weather**\n` +
-        `**Condition:** ${weather.condition}\n` +
-        `**Temperature:** ${weather.temperature}°C\n` +
-        `**Humidity:** ${weather.humidity}%`;
+        `🌤️ **Weather Update**\n` +
+        `**Date:** ${weather.date}\n` +
+        `**Season:** ${
+          weather.season.charAt(0).toUpperCase() + weather.season.slice(1)
+        }\n` +
+        `**Day:** ${weather.day.condition}\n` +
+        `**Night:** ${weather.night.condition}`;
 
       await interaction.reply(weatherMessage);
     } catch (error) {

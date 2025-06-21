@@ -20,10 +20,10 @@ function startWeatherScheduler(client) {
         }
         const weather = getWeatherUpdate();
         const weatherMessage =
-          `🌤️ **Today's Weather**\n` +
-          `**Condition:** ${weather.condition}\n` +
-          `**Temperature:** ${weather.temperature}°C\n` +
-          `**Humidity:** ${weather.humidity}%`;
+          `🌤️ **Weather Update**\n` +
+          `**Date:** ${weather.date}\n` +
+          `**Day:** ${weather.day.condition}\n` +
+          `**Night:** ${weather.night.condition}`;
         await channel.send(weatherMessage);
         logger.info("Posted scheduled weather update.");
       } catch (error) {
