@@ -1,5 +1,8 @@
 const axios = require("axios");
-const { getWeeklyForecast } = require("./src/services/weatherService");
+const {
+  getWeeklyForecast,
+  getWeatherEmoji,
+} = require("./src/services/weatherService");
 const { config } = require("./src/config/config");
 const { logger } = require("./src/utils/logger");
 
@@ -24,14 +27,17 @@ async function sendWeeklyForecastWebhook() {
     weeklyForecast.forEach((dayWeather, index) => {
       const isToday = index === 0;
       const dayLabel = isToday ? "Today" : dayWeather.dayOfWeek;
-
       forecastMessage +=
         `**${dayLabel} - ${dayWeather.date}**\n` +
         `Season: ${
           dayWeather.season.charAt(0).toUpperCase() + dayWeather.season.slice(1)
         }\n` +
-        `☀️ Day: ${dayWeather.day.condition}\n` +
-        `🌙 Night: ${dayWeather.night.condition}\n\n`;
+        `${getWeatherEmoji(dayWeather.day.condition, false)} Day: ${
+          dayWeather.day.condition
+        }\n` +
+        `${getWeatherEmoji(dayWeather.night.condition, true)} Night: ${
+          dayWeather.night.condition
+        }\n\n`;
     });
 
     // Add footer

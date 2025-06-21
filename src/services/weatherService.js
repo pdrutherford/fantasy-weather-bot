@@ -188,4 +188,105 @@ const getWeatherUpdate = () => {
   return getWeatherForDate(currentDate);
 };
 
-module.exports = { getWeatherUpdate, getWeeklyForecast, getWeatherForDate };
+// Map weather conditions to appropriate emojis
+const getWeatherEmoji = (condition, isNight = false) => {
+  const conditionLower = condition.toLowerCase();
+
+  // Snow and ice conditions
+  if (conditionLower.includes("snow") || conditionLower.includes("flurries")) {
+    return "❄️";
+  }
+  if (
+    conditionLower.includes("icy") ||
+    conditionLower.includes("frost") ||
+    conditionLower.includes("freezing")
+  ) {
+    return "🧊";
+  }
+  if (conditionLower.includes("sleet")) {
+    return "🌨️";
+  }
+
+  // Rain conditions
+  if (
+    conditionLower.includes("thunderstorm") ||
+    conditionLower.includes("thunder")
+  ) {
+    return "⛈️";
+  }
+  if (conditionLower.includes("heavy") && conditionLower.includes("rain")) {
+    return "🌧️";
+  }
+  if (
+    conditionLower.includes("rain") ||
+    conditionLower.includes("showers") ||
+    conditionLower.includes("drizzle")
+  ) {
+    return "🌦️";
+  }
+
+  // Fog and mist
+  if (conditionLower.includes("fog") || conditionLower.includes("mist")) {
+    return "🌫️";
+  }
+
+  // Clear and sunny conditions
+  if (
+    conditionLower.includes("sunny") ||
+    conditionLower.includes("bright") ||
+    conditionLower.includes("clear")
+  ) {
+    if (isNight || conditionLower.includes("starry")) {
+      return "🌟";
+    }
+    return "☀️";
+  }
+
+  // Cloudy conditions
+  if (conditionLower.includes("overcast") || conditionLower.includes("grey")) {
+    return isNight ? "☁️" : "☁️";
+  }
+  if (
+    conditionLower.includes("partly cloudy") ||
+    conditionLower.includes("scattered clouds")
+  ) {
+    return isNight ? "☁️" : "⛅";
+  }
+  if (conditionLower.includes("cloudy")) {
+    return isNight ? "☁️" : "☁️";
+  }
+
+  // Windy conditions
+  if (conditionLower.includes("blustery") || conditionLower.includes("windy")) {
+    return "💨";
+  }
+  if (conditionLower.includes("breeze")) {
+    return "🍃";
+  }
+
+  // Hazy conditions
+  if (conditionLower.includes("hazy")) {
+    return isNight ? "🌙" : "🌤️";
+  }
+
+  // Default based on general description
+  if (conditionLower.includes("mild") || conditionLower.includes("warm")) {
+    return isNight ? "�" : "�🌤️";
+  }
+  if (conditionLower.includes("cool") || conditionLower.includes("cold")) {
+    return isNight ? "❄️" : "❄️";
+  }
+  if (conditionLower.includes("hot")) {
+    return "🔥";
+  }
+
+  // Default emoji
+  return isNight ? "🌙" : "🌤️";
+};
+
+module.exports = {
+  getWeatherUpdate,
+  getWeeklyForecast,
+  getWeatherForDate,
+  getWeatherEmoji,
+};

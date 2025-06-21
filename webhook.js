@@ -1,5 +1,8 @@
 const axios = require("axios");
-const { getWeatherUpdate } = require("./src/services/weatherService");
+const {
+  getWeatherUpdate,
+  getWeatherEmoji,
+} = require("./src/services/weatherService");
 const { config } = require("./src/config/config");
 const { logger } = require("./src/utils/logger");
 
@@ -11,13 +14,17 @@ async function sendWeatherWebhook() {
     // Format the message for Discord webhook
     const weatherMessage = {
       content:
-        `🌤️ **Weather Update**\n` +
+        `📅 **Weather Update**\n` +
         `**Date:** ${weather.date}\n` +
         `**Season:** ${
           weather.season.charAt(0).toUpperCase() + weather.season.slice(1)
         }\n` +
-        `**Day:** ${weather.day.condition}\n` +
-        `**Night:** ${weather.night.condition}`,
+        `${getWeatherEmoji(weather.day.condition, false)} **Day:** ${
+          weather.day.condition
+        }\n` +
+        `${getWeatherEmoji(weather.night.condition, true)} **Night:** ${
+          weather.night.condition
+        }`,
     };
 
     // Send to Discord webhook
