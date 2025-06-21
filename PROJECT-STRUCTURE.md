@@ -12,7 +12,6 @@ discord-weather-bot/
 ├── package.json                  # Dependencies and scripts
 ├── package-lock.json             # Dependency lock file
 ├── README.md                     # Project documentation
-├── MIGRATION.md                  # Migration guide from bot to webhook
 ├── webhook.js                    # Daily weather webhook entry point
 ├── weekly-webhook.js             # Weekly forecast webhook entry point
 ├── test-webhook.js               # Local testing script for daily weather
