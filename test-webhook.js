@@ -5,7 +5,7 @@
  * Tests the webhook functionality without triggering GitHub Actions
  */
 
-const { sendWeatherWebhook } = require("./src/webhook");
+const { sendWeatherWebhook } = require("./webhook");
 const { logger } = require("./src/utils/logger");
 
 async function testWebhook() {

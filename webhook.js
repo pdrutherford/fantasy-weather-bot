@@ -1,7 +1,7 @@
 const axios = require("axios");
-const { getWeatherUpdate } = require("./services/weatherService");
-const { config } = require("./config/config");
-const { logger } = require("./utils/logger");
+const { getWeatherUpdate } = require("./src/services/weatherService");
+const { config } = require("./src/config/config");
+const { logger } = require("./src/utils/logger");
 
 async function sendWeatherWebhook() {
   try {

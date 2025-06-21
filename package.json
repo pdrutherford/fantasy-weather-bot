@@ -2,9 +2,9 @@
   "name": "discord-weather-webhook",
   "version": "1.0.0",
   "description": "A webhook service that posts daily weather updates for a fictional campaign to Discord.",
-  "main": "src/webhook.js",
+  "main": "webhook.js",
   "scripts": {
-    "start": "node src/webhook.js",
+    "start": "node webhook.js",
     "test": "node test-webhook.js"
   },
   "dependencies": {
