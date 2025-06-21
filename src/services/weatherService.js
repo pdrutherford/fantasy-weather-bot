@@ -1,4 +1,30 @@
-const { randomInt } = require("crypto");
+// Simple seeded random number generator (Mulberry32)
+// This ensures deterministic weather based on date
+function seededRandom(seed) {
+  let a = seed;
+  return function () {
+    a |= 0;
+    a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+// Generate a seed from a date (YYYY-MM-DD format)
+function dateToSeed(date) {
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1; // 0-based to 1-based
+  const day = date.getDate();
+
+  // Create a unique seed by combining year, month, and day
+  return year * 10000 + month * 100 + day;
+}
+
+// Seeded random integer function
+function seededRandomInt(rng, min, max) {
+  return Math.floor(rng() * (max - min)) + min;
+}
 
 // Seasonal weather patterns for Western European climate
 const seasonalWeather = {
@@ -99,13 +125,25 @@ const getWeatherUpdate = () => {
   const season = getSeason(currentDate);
   const seasonData = seasonalWeather[season];
 
-  // Generate day weather
-  const dayCondition =
-    seasonData.dayConditions[randomInt(0, seasonData.dayConditions.length)];
+  // Create a seeded random generator based on the current date
+  const seed = dateToSeed(currentDate);
+  const rng = seededRandom(seed);
 
-  // Generate night weather (using night-specific conditions)
-  const nightCondition =
-    seasonData.nightConditions[randomInt(0, seasonData.nightConditions.length)];
+  // Generate day weather using seeded random
+  const dayConditionIndex = seededRandomInt(
+    rng,
+    0,
+    seasonData.dayConditions.length
+  );
+  const dayCondition = seasonData.dayConditions[dayConditionIndex];
+
+  // Generate night weather using seeded random
+  const nightConditionIndex = seededRandomInt(
+    rng,
+    0,
+    seasonData.nightConditions.length
+  );
+  const nightCondition = seasonData.nightConditions[nightConditionIndex];
 
   // Format date
   const formattedDate = currentDate.toLocaleDateString("en-US", {
