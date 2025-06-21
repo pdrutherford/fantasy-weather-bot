@@ -1,6 +1,8 @@
 require("dotenv").config();
 
 const config = {
+  WEBHOOK_URL: process.env.WEBHOOK_URL,
+  // Legacy config kept for backwards compatibility
   BOT_TOKEN: process.env.BOT_TOKEN,
   CLIENT_ID: process.env.CLIENT_ID,
   GUILD_ID: process.env.GUILD_ID,
@@ -8,7 +10,7 @@ const config = {
 };
 
 // Validate required environment variables
-const requiredVars = ["BOT_TOKEN", "CLIENT_ID"];
+const requiredVars = ["WEBHOOK_URL"];
 for (const varName of requiredVars) {
   if (!config[varName]) {
     console.error(`Missing required environment variable: ${varName}`);

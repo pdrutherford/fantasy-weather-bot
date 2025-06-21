@@ -1,18 +1,18 @@
 {
-  "name": "discord-weather-bot",
+  "name": "discord-weather-webhook",
   "version": "1.0.0",
-  "description": "A Discord bot that posts daily weather updates for a fictional campaign.",
-  "main": "src/index.js",
+  "description": "A webhook service that posts daily weather updates for a fictional campaign to Discord.",
+  "main": "src/webhook.js",
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/webhook.js",
+    "test": "node test-webhook.js"
   },
   "dependencies": {
-    "discord.js": "^14.0.0",
-    "dotenv": "^10.0.0",
-    "node-cron": "^4.1.1"
+    "axios": "^1.6.0",
+    "dotenv": "^16.0.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.0"
+    "nodemon": "^3.0.0"
   },
   "keywords": [
     "discord",
