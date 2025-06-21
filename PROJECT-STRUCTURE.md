@@ -13,11 +13,14 @@ discord-weather-bot/
 ├── package-lock.json             # Dependency lock file
 ├── README.md                     # Project documentation
 ├── MIGRATION.md                  # Migration guide from bot to webhook
-├── webhook.js                    # Main webhook entry point
-├── test-webhook.js               # Local testing script
+├── webhook.js                    # Daily weather webhook entry point
+├── weekly-webhook.js             # Weekly forecast webhook entry point
+├── test-webhook.js               # Local testing script for daily weather
+├── test-weekly.js                # Local testing script for weekly forecast
 ├── .github/
 │   └── workflows/
-│       └── daily-weather.yml     # GitHub Actions workflow
+│       ├── daily-weather.yml     # Daily weather GitHub Actions workflow
+│       └── weekly-forecast.yml   # Weekly forecast GitHub Actions workflow
 └── src/
     ├── config/
     │   └── config.js              # Configuration management
@@ -45,15 +48,21 @@ The following bot-related files were removed during cleanup:
 ## Key Files
 
 ### Core Files
-- **`webhook.js`** - Main entry point that sends weather updates to Discord
-- **`src/services/weatherService.js`** - Contains weather generation logic
-- **`src/config/config.js`** - Simplified configuration (only webhook URL needed)
+
+- **`webhook.js`** - Daily weather update entry point that sends weather to Discord
+- **`weekly-webhook.js`** - Weekly forecast entry point that sends 7-day forecast to GM channel
+- **`src/services/weatherService.js`** - Contains weather generation logic with daily and weekly functions
+- **`src/config/config.js`** - Configuration for both daily and GM webhook URLs
 
 ### Development Files
-- **`test-webhook.js`** - Script for local testing
-- **`.github/workflows/daily-weather.yml`** - Automated daily execution
+
+- **`test-webhook.js`** - Script for testing daily weather updates locally
+- **`test-weekly.js`** - Script for testing weekly forecasts locally
+- **`.github/workflows/daily-weather.yml`** - Automated daily execution at 12:00 PM UTC
+- **`.github/workflows/weekly-forecast.yml`** - Automated weekly execution every Saturday at midnight UTC
 
 ### Dependencies
+
 - **`axios`** - For HTTP requests to Discord webhook
 - **`dotenv`** - For environment variable management
 
@@ -61,10 +70,15 @@ The following bot-related files were removed during cleanup:
 
 ```bash
 # Local testing
-npm test
+npm test          # Test daily weather update
+npm run test-weekly  # Test weekly forecast
 
 # Manual execution
-npm start
+npm start         # Send daily weather update
+npm run weekly    # Send weekly forecast
 ```
 
-The GitHub Actions workflow automatically runs daily at 12:00 PM UTC (8:00 AM EST).
+The GitHub Actions workflows automatically run:
+
+- **Daily weather**: Every day at 12:00 PM UTC (8:00 AM EST)
+- **Weekly forecast**: Every Saturday at midnight UTC

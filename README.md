@@ -5,6 +5,7 @@ A GitHub Actions-powered webhook service that posts daily weather updates for yo
 ## Features
 
 - Scheduled daily weather reports via Discord webhooks
+- Weekly weather forecasts for GMs via separate webhook
 - Runs on GitHub Actions (no server hosting required)
 - Deterministic weather generation based on date
 - Modular service structure for easy extension
@@ -21,17 +22,19 @@ A GitHub Actions-powered webhook service that posts daily weather updates for yo
 ### 2. Configure GitHub Repository
 
 1. **Fork or clone this repository**
-2. **Add the webhook URL as a GitHub secret:**
+2. **Add the webhook URLs as GitHub secrets:**
    - Go to your repository settings
    - Navigate to **Secrets and variables** → **Actions**
    - Click **New repository secret**
-   - Name: `WEBHOOK_URL`
-   - Value: Your Discord webhook URL
+   - Required: `WEBHOOK_URL` (for daily weather updates)
+   - Optional: `GM_WEBHOOK_URL` (for weekly forecasts to GM channel)
 
 ### 3. Schedule Configuration
 
-The workflow runs daily at 12:00 PM UTC (8:00 AM EST/7:00 AM EDT).
-To change the schedule, edit `.github/workflows/daily-weather.yml` and modify the cron expression.
+**Daily Weather Updates:** Run daily at 12:00 PM UTC (8:00 AM EST/7:00 AM EDT)
+**Weekly Forecasts:** Run Saturdays at 00:00 UTC (midnight)
+
+To change the schedule, edit the cron expressions in `.github/workflows/` files.
 
 ### 4. Test the Setup
 
@@ -49,17 +52,31 @@ To change the schedule, edit `.github/workflows/daily-weather.yml` and modify th
    - Copy `.env.example` to `.env`
    - Add your webhook URL
 3. **Test locally**
+
    ```sh
+   # Test daily weather update
+   npm test
+
+   # Test weekly forecast
+   npm run test-weekly
+
+   # Send daily weather update
    npm start
+
+   # Send weekly forecast
+   npm run weekly
    ```
 
 ## Project Structure
 
-- `src/webhook.js` - Main webhook sender
+- `webhook.js` - Daily weather webhook sender
+- `weekly-webhook.js` - Weekly forecast webhook sender
+- `test-webhook.js` - Test daily weather locally
+- `test-weekly.js` - Test weekly forecast locally
 - `src/services/` - Business logic (weather generation)
 - `src/config/` - Configuration loader
 - `src/utils/` - Logger utilities
-- `.github/workflows/` - GitHub Actions workflow
+- `.github/workflows/` - GitHub Actions workflows
 
 ## Weather System
 

@@ -5,7 +5,9 @@
   "main": "webhook.js",
   "scripts": {
     "start": "node webhook.js",
-    "test": "node test-webhook.js"
+    "test": "node test-webhook.js",
+    "weekly": "node weekly-webhook.js",
+    "test-weekly": "node test-weekly.js"
   },
   "dependencies": {
     "axios": "^1.6.0",

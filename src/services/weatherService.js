@@ -120,13 +120,12 @@ const getSeason = (date) => {
   return "winter"; // December, January, February
 };
 
-const getWeatherUpdate = () => {
-  const currentDate = new Date();
-  const season = getSeason(currentDate);
+const getWeatherForDate = (date) => {
+  const season = getSeason(date);
   const seasonData = seasonalWeather[season];
 
-  // Create a seeded random generator based on the current date
-  const seed = dateToSeed(currentDate);
+  // Create a seeded random generator based on the date
+  const seed = dateToSeed(date);
   const rng = seededRandom(seed);
 
   // Generate day weather using seeded random
@@ -146,14 +145,20 @@ const getWeatherUpdate = () => {
   const nightCondition = seasonData.nightConditions[nightConditionIndex];
 
   // Format date
-  const formattedDate = currentDate.toLocaleDateString("en-US", {
+  const formattedDate = date.toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
   });
 
+  // Get day of week
+  const dayOfWeek = date.toLocaleDateString("en-US", {
+    weekday: "long",
+  });
+
   return {
     date: formattedDate,
+    dayOfWeek: dayOfWeek,
     season: season,
     day: {
       condition: dayCondition,
@@ -164,4 +169,23 @@ const getWeatherUpdate = () => {
   };
 };
 
-module.exports = { getWeatherUpdate };
+const getWeeklyForecast = () => {
+  const today = new Date();
+  const forecast = [];
+
+  // Generate forecast for the next 7 days
+  for (let i = 0; i < 7; i++) {
+    const forecastDate = new Date(today);
+    forecastDate.setDate(today.getDate() + i);
+    forecast.push(getWeatherForDate(forecastDate));
+  }
+
+  return forecast;
+};
+
+const getWeatherUpdate = () => {
+  const currentDate = new Date();
+  return getWeatherForDate(currentDate);
+};
+
+module.exports = { getWeatherUpdate, getWeeklyForecast, getWeatherForDate };
