@@ -271,7 +271,7 @@ const getWeatherEmoji = (condition, isNight = false) => {
 
   // Default based on general description
   if (conditionLower.includes("mild") || conditionLower.includes("warm")) {
-    return isNight ? "�" : "�🌤️";
+    return isNight ? "🌙" : "🌤️";
   }
   if (conditionLower.includes("cool") || conditionLower.includes("cold")) {
     return isNight ? "❄️" : "❄️";
