@@ -51,7 +51,7 @@ The following bot-related files were removed during cleanup:
 
 - **`webhook.js`** - Daily weather update entry point that sends weather to Discord
 - **`weekly-webhook.js`** - Weekly forecast entry point that sends 7-day forecast to GM channel
-- **`src/services/weatherService.js`** - Contains weather generation logic with daily and weekly functions
+- **`src/services/weatherService.js`** - Contains weather generation logic with daily, weekly, and emoji functions
 - **`src/config/config.js`** - Configuration for both daily and GM webhook URLs
 
 ### Development Files
@@ -63,7 +63,7 @@ The following bot-related files were removed during cleanup:
 
 ### Dependencies
 
-- **`axios`** - For HTTP requests to Discord webhook
+- **`axios`** - For HTTP requests to Discord webhooks
 - **`dotenv`** - For environment variable management
 
 ## Usage

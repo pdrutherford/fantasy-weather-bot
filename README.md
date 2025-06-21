@@ -8,16 +8,18 @@ A GitHub Actions-powered webhook service that posts daily weather updates for yo
 - Weekly weather forecasts for GMs via separate webhook
 - Runs on GitHub Actions (no server hosting required)
 - Deterministic weather generation based on date
+- Dynamic weather-appropriate emojis that differ for day/night conditions
 - Modular service structure for easy extension
 
 ## Setup
 
-### 1. Create a Discord Webhook
+### 1. Create Discord Webhooks
 
 1. Go to your Discord channel settings
 2. Navigate to **Integrations** → **Webhooks**
 3. Click **Create Webhook**
 4. Copy the webhook URL
+5. **Optional**: Create a second webhook for GM-only weekly forecasts in a separate channel
 
 ### 2. Configure GitHub Repository
 
@@ -39,7 +41,7 @@ To change the schedule, edit the cron expressions in `.github/workflows/` files.
 ### 4. Test the Setup
 
 - Go to the **Actions** tab in your GitHub repository
-- Find the "Daily Weather Update" workflow
+- Find the "Daily Weather Update" or "Weekly Weather Forecast" workflow
 - Click **Run workflow** to test manually
 
 ## Local Development
@@ -82,8 +84,9 @@ To change the schedule, edit the cron expressions in `.github/workflows/` files.
 
 - Deterministic weather based on current date
 - Seasonal variations (spring, summer, autumn, winter)
-- Different day/night conditions
+- Different day/night conditions with appropriate emojis
 - Western European climate patterns
+- Weekly forecasts for campaign planning
 
 ## License
 

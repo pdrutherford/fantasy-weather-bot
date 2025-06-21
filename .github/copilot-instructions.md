@@ -13,14 +13,16 @@ Webhook service that posts daily weather updates for fictional campaigns to Disc
 
 ## Project Structure
 
-- **Main Entry**: [`webhook.js`](../webhook.js) - webhook execution
+- **Main Entry**: [`webhook.js`](../webhook.js) - daily weather webhook execution
+- **Weekly Entry**: [`weekly-webhook.js`](../weekly-webhook.js) - weekly forecast webhook execution
 - **Config**: [`src/config/config.js`](../src/config/config.js) - environment variables
 - **Weather Service**: [`src/services/weatherService.js`](../src/services/weatherService.js) - weather generation logic
 - **Logger**: [`src/utils/logger.js`](../src/utils/logger.js) - structured logging
 
 ## Environment Variables
 
-- `WEBHOOK_URL`: Discord webhook URL (required)
+- `WEBHOOK_URL`: Discord webhook URL for daily updates (required)
+- `GM_WEBHOOK_URL`: Discord webhook URL for weekly GM forecasts (optional)
 
 ## Common Tasks
 
@@ -35,7 +37,8 @@ Edit seasonal conditions in `weatherService.js`:
 ### Testing Locally
 
 ```bash
-npm test  # runs test-webhook.js
+npm test          # runs test-webhook.js (daily weather)
+npm run test-weekly  # runs test-weekly.js (weekly forecast)
 ```
 
 ### Error Handling
@@ -48,4 +51,6 @@ npm test  # runs test-webhook.js
 
 - **Deterministic**: Same date = same weather
 - **Seasonal**: Weather varies by time of year
+- **Dual Webhooks**: Daily updates for players, weekly forecasts for GMs
+- **Dynamic Emojis**: Weather-appropriate emojis that differ for day/night
 - **Modular**: Easy to extend with new features
