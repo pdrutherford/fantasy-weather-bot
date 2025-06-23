@@ -3,8 +3,11 @@ const {
   getWeeklyForecast,
   getWeatherEmoji,
 } = require("./src/services/weatherService");
-const { config } = require("./src/config/config");
+const { config, validateConfig } = require("./src/config/config");
 const { logger } = require("./src/utils/logger");
+
+// Validate only GM_WEBHOOK_URL for weekly webhook
+validateConfig(["GM_WEBHOOK_URL"], ["WEBHOOK_URL"]);
 
 async function sendWeeklyForecastWebhook() {
   try {

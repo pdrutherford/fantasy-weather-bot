@@ -3,8 +3,11 @@ const {
   getWeatherUpdate,
   getWeatherEmoji,
 } = require("./src/services/weatherService");
-const { config } = require("./src/config/config");
+const { config, validateConfig } = require("./src/config/config");
 const { logger } = require("./src/utils/logger");
+
+// Validate only WEBHOOK_URL for daily webhook
+validateConfig(["WEBHOOK_URL"], ["GM_WEBHOOK_URL"]);
 
 async function sendWeatherWebhook() {
   try {
