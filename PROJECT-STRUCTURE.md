@@ -1,6 +1,6 @@
 # Project Structure
 
-This document shows the cleaned-up project structure after converting from Discord bot to webhook.
+This document shows the project structure for the Discord Weather Webhook system.
 
 ## Current Structure
 
@@ -12,72 +12,131 @@ discord-weather-bot/
 ├── package.json                  # Dependencies and scripts
 ├── package-lock.json             # Dependency lock file
 ├── README.md                     # Project documentation
-├── webhook.js                    # Daily weather webhook entry point
-├── weekly-webhook.js             # Weekly forecast webhook entry point
+├── PROJECT-STRUCTURE.md          # This file
+├── webhook.js                    # Daily weather webhook
+├── weekly-webhook.js             # Weekly forecast webhook
 ├── test-webhook.js               # Local testing script for daily weather
 ├── test-weekly.js                # Local testing script for weekly forecast
 ├── .github/
+│   ├── copilot-instructions.md   # GitHub Copilot coding instructions
 │   └── workflows/
 │       ├── daily-weather.yml     # Daily weather GitHub Actions workflow
-│       └── weekly-forecast.yml   # Weekly forecast GitHub Actions workflow
+│       ├── weekly-forecast.yml   # Weekly forecast GitHub Actions workflow
+│       └── regional-weather.yml.example # Example regional weather workflow
 └── src/
     ├── config/
-    │   └── config.js              # Configuration management
+    │   ├── config.js              # Configuration management with regional support
+    │   ├── regions.json           # Regional weather pattern definitions
+    │   └── regions-example.json   # Example regions configuration
     ├── services/
-    │   └── weatherService.js      # Weather generation logic
+    │   └── weatherService.js      # Weather generation logic with regional support
     └── utils/
         └── logger.js              # Logging utilities
 ```
 
-## Removed Files/Directories
+## System Architecture
 
-The following bot-related files were removed during cleanup:
+The Discord Weather Webhook system generates deterministic weather updates for fictional campaign regions and posts them to Discord channels via webhooks. The system supports both single-region and multi-region configurations.
 
-- `src/index.js` - Old bot entry point
-- `src/bot/` - Entire bot directory including:
-  - `src/bot/client.js`
-  - `src/bot/loadCommands.js`
-  - `src/bot/weatherScheduler.js`
-  - `src/bot/events/`
-- `src/commands/` - Interactive commands directory
-- `docs/` - Empty documentation directory
-- `scripts/` - Empty scripts directory
-- `logs/` - Bot logs directory
+## Core Features
+
+- **Deterministic Weather**: Same date generates same weather conditions
+- **Seasonal Variation**: Weather patterns change based on time of year
+- **Regional Support**: Different climate types with unique weather patterns
+- **Discord Integration**: Automatic posting via webhooks
+- **Dual Formats**: Daily updates and weekly forecasts
+- **GitHub Actions**: Automated scheduling and deployment
 
 ## Key Files
 
-### Core Files
+### Entry Points
 
-- **`webhook.js`** - Daily weather update entry point that sends weather to Discord
-- **`weekly-webhook.js`** - Weekly forecast entry point that sends 7-day forecast to GM channel
-- **`src/services/weatherService.js`** - Contains weather generation logic with daily, weekly, and emoji functions
-- **`src/config/config.js`** - Configuration for both daily and GM webhook URLs
+- **`webhook.js`** - Daily weather update webhook
+- **`weekly-webhook.js`** - Weekly forecast webhook
 
-### Development Files
+### Configuration
 
-- **`test-webhook.js`** - Script for testing daily weather updates locally
-- **`test-weekly.js`** - Script for testing weekly forecasts locally
-- **`.github/workflows/daily-weather.yml`** - Automated daily execution at 12:00 PM UTC
-- **`.github/workflows/weekly-forecast.yml`** - Automated weekly execution every Saturday at midnight UTC
+- **`src/config/config.js`** - Environment variable management and regional configuration
+- **`src/config/regions.json`** - Regional climate definitions and webhook URLs
+- **`src/config/regions-example.json`** - Example regions configuration template
 
-### Dependencies
+### Core Logic
 
-- **`axios`** - For HTTP requests to Discord webhooks
-- **`dotenv`** - For environment variable management
+- **`src/services/weatherService.js`** - Weather generation with seeded randomization
+- **`src/utils/logger.js`** - Structured logging utilities
+
+### Testing
+
+- **`test-webhook.js`** - Test daily weather updates locally
+- **`test-weekly.js`** - Test weekly forecasts locally
+
+### Automation
+
+- **`.github/workflows/daily-weather.yml`** - Daily weather automation
+- **`.github/workflows/weekly-forecast.yml`** - Weekly forecast automation
+- **`.github/workflows/regional-weather.yml.example`** - Example regional setup
+
+## Regional Climate Types
+
+The system supports multiple climate types, each with unique seasonal weather patterns:
+
+| Region Type         | Climate          | Description                                      |
+| ------------------- | ---------------- | ------------------------------------------------ |
+| `temperate_coastal` | Western European | Maritime climate with mild winters, cool summers |
+| `desert`            | Arid             | Extreme temperatures, minimal precipitation      |
+| `tropical`          | Monsoon          | Hot, humid with distinct wet/dry seasons         |
+| `arctic`            | Polar            | Extreme cold, brief summers, harsh conditions    |
+| `mountain`          | Alpine           | High altitude, rapid weather changes             |
+
+## Configuration
+
+### Environment Variables
+
+- `REGIONS_CONFIG`: Complete regions.json as JSON string (GitHub Actions)
+- `WEEKLY_FORECAST_WEBHOOK_URL`: Consolidated weekly forecasts (optional)
+
+### Local Development
+
+Create `regions.json` in project root with webhook URLs. The system checks these paths in order:
+
+1. `regions.json` (project root)
+2. `config/regions.json`
+3. `src/config/custom-regions.json`
+4. `src/config/regions.json`
+5. `src/config/regions-example.json`
+
+**Security Note**: `regions.json` contains sensitive webhook URLs and should not be committed to version control.
 
 ## Usage
 
-```bash
-# Local testing
-npm test          # Test daily weather update
-npm run test-weekly  # Test weekly forecast
+### NPM Scripts
 
-# Manual execution
+```bash
 npm start         # Send daily weather update
 npm run weekly    # Send weekly forecast
+npm test          # Test daily weather locally
+npm run test-weekly  # Test weekly forecast locally
 ```
 
-The GitHub Actions workflows automatically run:
+### Manual Execution
+
+The webhooks can be triggered manually by running the scripts directly:
+
+```bash
+node webhook.js          # Send daily weather update
+node weekly-webhook.js   # Send weekly forecast
+node test-webhook.js     # Test daily weather
+node test-weekly.js      # Test weekly forecast
+```
+
+### GitHub Actions
+
+The system automatically runs:
 
 - **Daily weather**: Every day at 12:00 PM UTC (8:00 AM EST)
 - **Weekly forecast**: Every Saturday at midnight UTC
+
+## Dependencies
+
+- **`axios`** - HTTP requests to Discord webhooks
+- **`dotenv`** - Environment variable management

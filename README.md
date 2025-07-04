@@ -1,251 +1,276 @@
 # Discord Weather Webhook for Cataphracts Campaigns
 
-Automated daily weather updates for real-time [Cataphracts](https://samsorensen.blot.im/cataphracts-design-diary-1) campaigns. Posts consistent, date-based weather to Discord channels via GitHub Actions.
+Automated daily weather updates for real-time [Cataphracts](https://samsorensen.blot.im/cataphracts-design-diary-1) campaigns. Posts deterministic, date-based weather to Discord channels via GitHub Actions.
 
-## Features
+## Easy Setup Guide
 
-- Daily weather reports synchronized with real-world dates
-- Optional weekly forecasts for operational planning
-- Fully configurable weather patterns and conditions
-- Seasonal weather variations with customizable date ranges
-- Deterministic weather generation (same date = same weather)
-- No server hosting required (runs on GitHub Actions)
-- Modular design for easy customization
+This guide assumes you have never used GitHub or coded before. Follow each step carefully.
+
+### Step 1: Set Up Your Discord Channel
+
+1. Open Discord and go to the channel where you want weather updates
+2. Click the gear icon (⚙️) next to the channel name
+3. Select "Integrations" from the left menu
+4. Click "Webhooks"
+5. Click "New Webhook"
+6. Give it a name like "Weather Bot"
+7. Click "Copy Webhook URL" and save this URL somewhere safe - you'll need it later
+8. Click "Save Changes"
+
+**Optional: Use a Discord Thread**
+If you want weather updates in a thread to keep your main channel clean:
+
+1. In your Discord channel, type a message like "Weather Updates"
+2. Right-click on your message and select "Create Thread"
+3. Name the thread something like "Daily Weather"
+4. Copy the thread's webhook URL instead by going to the thread settings → Integrations → Webhooks
+5. Create the webhook in the thread and use that URL in your configuration
+
+This keeps all weather updates organized in one thread instead of cluttering the main channel.
+
+### Step 2: Get This Code
+
+1. Go to https://github.com/your-username/discord-weather-bot (replace with actual repo)
+2. Click the green "Code" button
+3. Click "Download ZIP"
+4. Extract the ZIP file to your computer
+5. Remember where you saved it
+
+### Step 3: Create Your Weather Configuration
+
+1. In the extracted folder, find the file called `regions-example.json` in the `src/config` folder
+2. Copy this file to the main folder (next to `README.md`)
+3. Rename the copied file to `regions.json`
+4. Open `regions.json` in a text editor (Notepad works fine)
+5. Replace the example data with your own:
+   - Change `"temperate_coastal"` to your region name (use underscores instead of spaces)
+   - Change `"Temperate Coastal Region"` to your campaign's region name
+   - Replace `"https://discord.com/api/webhooks/YOUR_WEBHOOK_URL"` with the webhook URL you copied from Discord in Step 1
+   - Modify the weather conditions to match your world's climate
+6. Save the file
+
+**Important**: Make sure to use the exact webhook URL you copied from Discord, including the long string of numbers and letters at the end.
+
+### Step 4: Set Up GitHub Actions (Automated Posting)
+
+1. Go to https://github.com and create a free account if you don't have one
+2. Click the "+" icon in the top right corner and select "New repository"
+3. Name it something like "my-weather-bot"
+4. Make sure "Public" is selected
+5. Click "Create repository"
+6. Click "uploading an existing file"
+7. Drag all the files from your extracted folder into the upload area
+8. Scroll down and click "Commit changes"
+
+### Step 5: Configure Your Secrets
+
+1. In your GitHub repository, click "Settings" at the top
+2. Click "Secrets and variables" in the left menu
+3. Click "Actions"
+4. Click "New repository secret"
+5. For the name, type: `REGIONS_CONFIG`
+6. For the value, copy and paste the entire contents of your `regions.json` file
+7. Click "Add secret"
+
+### Step 6: Test Your Setup
+
+1. In your repository, click "Actions" at the top
+2. Click "Daily Weather Update" on the left
+3. Click "Run workflow" on the right
+4. Click the green "Run workflow" button
+5. Wait about 30 seconds, then refresh the page
+6. Check your Discord channel - you should see a weather update
+
+### Step 7: Schedule Your Weather Updates
+
+Your weather will now automatically post:
+
+- Daily at 12:00 PM UTC
+- Weekly forecast on Saturdays at midnight UTC
+
+To change these times:
+
+1. Go to the `.github/workflows` folder in your repository
+2. Edit `daily-weather.yml` and `weekly-forecast.yml` files
+3. Change the `cron` line (search online for "cron schedule generator" for help)
+
+### Optional: Weekly Forecast Setup
+
+If you want a consolidated weekly forecast in a different channel:
+
+1. Create another Discord webhook following Step 1
+2. In your GitHub repository settings, add another secret called `WEEKLY_FORECAST_WEBHOOK_URL`
+3. Use the new webhook URL as the value
+
+### Troubleshooting
+
+**No weather appears in Discord:**
+
+- Check that your webhook URL is correct and starts with `https://discord.com/api/webhooks/`
+- Make sure the Discord channel allows webhooks
+- Verify your `regions.json` file is valid JSON (use an online JSON validator)
+- Test your webhook URL by pasting it in a browser - you should see a message about webhook methods
+
+**Weather updates at wrong time:**
+
+- Remember that GitHub Actions uses UTC time
+- Convert your desired time to UTC using an online converter
+
+**Same weather every day:**
+
+- Make sure each season has multiple different weather conditions
+- The system picks randomly from your list
+
+**GitHub Actions not running:**
+
+- Check the "Actions" tab in your repository for error messages
+- Verify your secrets are set correctly
 
 ## Setup
 
 ### 1. Create Discord Webhooks
 
-1. Go to your Discord channel settings
-2. Navigate to **Integrations** → **Webhooks**
-3. Click **Create Webhook**
-4. Copy the webhook URL
-5. **Optional**: Create a second webhook for weekly forecasts in a separate channel
+1. Go to Discord channel settings → Integrations → Webhooks
+2. Create webhook, copy URL
+3. Optional: Create second webhook for weekly forecasts
 
-### 2. Configure GitHub Repository
+### 2. Configure Regions
 
-1. **Fork this repository**
-2. **Add webhook URLs as GitHub secrets:**
-   - Go to repository settings
-   - Navigate to **Secrets and variables** → **Actions**
-   - Click **New repository secret**
-   - Required: `WEBHOOK_URL` (daily weather updates)
-   - Optional: `GM_WEBHOOK_URL` (weekly forecasts)
+Create `regions.json` in project root:
 
-### 3. Test the Setup
+```json
+{
+  "regions": {
+    "my_region": {
+      "name": "My Campaign Region",
+      "webhookUrl": "https://discord.com/api/webhooks/YOUR_WEBHOOK_URL",
+      "seasonalWeather": {
+        "spring": {
+          "dayConditions": ["Mild and sunny", "Light rain", "Overcast"],
+          "nightConditions": ["Clear and cool", "Light drizzle", "Cloudy"]
+        },
+        "summer": {
+          "dayConditions": [
+            "Warm and sunny",
+            "Hot with clear skies",
+            "Thunderstorms"
+          ],
+          "nightConditions": [
+            "Warm with clear skies",
+            "Mild and starry",
+            "Evening storms"
+          ]
+        },
+        "autumn": {
+          "dayConditions": ["Cool and crisp", "Overcast with rain", "Windy"],
+          "nightConditions": ["Cool and crisp", "Steady rain", "Dense fog"]
+        },
+        "winter": {
+          "dayConditions": [
+            "Cold and frosty",
+            "Overcast with sleet",
+            "Light snow"
+          ],
+          "nightConditions": [
+            "Frosty with clear skies",
+            "Sleet",
+            "Snow falling"
+          ]
+        }
+      }
+    }
+  }
+}
+```
 
-- Go to the **Actions** tab in your repository
-- Find "Daily Weather Update" workflow
-- Click **Run workflow** to test
+### 3. Local Testing
+
+```bash
+npm install
+npm test          # Test daily weather
+npm run test-weekly  # Test weekly forecast
+```
+
+### 4. GitHub Actions Setup
+
+1. Fork this repository
+2. Go to Settings → Secrets and variables → Actions
+3. Add secret: `REGIONS_CONFIG` with your complete `regions.json` content
+4. Optional: Add `WEEKLY_FORECAST_WEBHOOK_URL` for consolidated weekly forecasts
+
+## Usage
+
+## Usage
+
+```bash
+npm start         # Send daily weather update
+npm run weekly    # Send weekly forecast
+npm test          # Test daily weather locally
+npm run test-weekly  # Test weekly forecast locally
+```
 
 ## Configuration
 
-### Schedule Timing
+### Schedules
 
-Edit `.github/workflows/daily-weather.yml` and `.github/workflows/weekly-forecast.yml` to change when updates are posted.
+Default GitHub Actions schedule:
 
-Default schedule:
+- Daily weather: 12:00 PM UTC
+- Weekly forecast: Saturday 00:00 UTC
 
-- **Daily weather**: 5:00 AM UTC (midnight Eastern)
-- **Weekly forecast**: Saturday 00:00 UTC
-
-Change the cron expression to modify timing:
-
-```yaml
-schedule:
-  - cron: "0 12 * * *" # Daily at noon UTC, as an example
-```
+Edit `.github/workflows/daily-weather.yml` and `.github/workflows/weekly-forecast.yml` to change timing.
 
 ### Weather Patterns
 
-Weather conditions are defined in `src/services/weatherService.js`. The system includes four seasons with customizable conditions for each. Weather emojis in the message are generated to try to match the descriptive text.
+Weather conditions are defined in `seasonalWeather` objects within your `regions.json`. Each season requires:
 
-#### Modifying Weather Conditions
+- `dayConditions`: Array of day weather descriptions
+- `nightConditions`: Array of night weather descriptions
 
-Edit the `seasonalWeather` object to change available weather:
+### Example Region Template
 
-```javascript
-const seasonalWeather = {
-  spring: {
-    dayConditions: [
-      "Clear skies",
-      "Light rain",
-      "Overcast",
-      // Add your conditions here
-    ],
-    nightConditions: [
-      "Clear and cool",
-      "Light drizzle",
-      "Cloudy",
-      // Add your conditions here
-    ],
-  },
-  // ... other seasons
-};
-```
+Copy from `src/config/regions-example.json` for reference climate types:
 
-#### Changing Seasonal Date Ranges
+- Temperate coastal (Western European)
+- Desert (arid)
+- Tropical (monsoon)
+- Arctic (polar)
+- Mountain (alpine)
 
-Modify the `getSeason` function to adjust when seasons change:
+### Environment Variables
 
-```javascript
-const getSeason = (date) => {
-  const month = date.getMonth() + 1;
+**Required:**
 
-  if (month >= 3 && month <= 5) return "spring"; // Mar-May
-  if (month >= 6 && month <= 8) return "summer"; // Jun-Aug
-  if (month >= 9 && month <= 11) return "autumn"; // Sep-Nov
-  return "winter"; // Dec-Feb
-};
-```
+- `REGIONS_CONFIG`: JSON string of your regions configuration (GitHub Actions only)
 
-#### Weather Emoji Customization
+**Optional:**
 
-Edit the `getWeatherEmoji` function to change emoji mappings:
+- `WEEKLY_FORECAST_WEBHOOK_URL`: Consolidated weekly forecast webhook
 
-```javascript
-// Snow and ice conditions
-if (conditionLower.includes("snow")) {
-  return "❄️";
-}
-// Add or modify emoji mappings
-```
+**Local Development:**
+Create `.env` file with webhook URLs or use `regions.json` directly.
 
-### Message Format
+## How It Works
 
-Customize weather post format by editing `webhook.js` and `weekly-webhook.js`:
+- Weather is deterministic: same date produces same weather for each region
+- Seasons change automatically based on calendar date
+- Each region has unique weather patterns defined in configuration
+- Weather generation uses seeded randomization for consistency
+- Discord messages include weather-appropriate emojis
 
-**Daily format** (`webhook.js`):
+## Files
 
-```javascript
-const weatherMessage = {
-  content:
-    `📅 **Weather Update**\n` +
-    `**Date:** ${weather.date}\n` +
-    `**Season:** ${weather.season}\n` +
-    `☀️ **Day:** ${weather.day.condition}\n` +
-    `🌙 **Night:** ${weather.night.condition}`,
-};
-```
-
-**Weekly format** (`weekly-webhook.js`):
-
-```javascript
-let forecastMessage = "📅 **Weekly Weather Forecast**\n\n";
-// Modify loop to change weekly format
-```
-
-## Local Development
-
-1. **Install dependencies**
-   ```sh
-   npm install
-   ```
-2. **Configure environment variables**
-   - Copy `.env.example` to `.env`
-   - Add your webhook URLs
-3. **Test locally**
-   ```sh
-   npm test          # Test daily weather
-   npm run test-weekly  # Test weekly forecast
-   npm start         # Send daily update
-   npm run weekly    # Send weekly forecast
-   ```
-
-## Advanced Configuration
-
-### Climate Patterns
-
-The default weather system uses Western European climate patterns. To modify:
-
-1. **Edit seasonal conditions** in `src/services/weatherService.js`
-2. **Adjust probability weights** by reordering conditions (first conditions are more likely)
-3. **Add new seasons** by modifying the `seasonalWeather` object and `getSeason` function
-
-### Deterministic Weather System
-
-Weather is generated using a seeded random number generator based on the date. This ensures:
-
-- Same date always produces same weather
-- Weather patterns remain consistent across campaign restarts
-- Players can reference historical weather
-
-To modify the randomization:
-
-```javascript
-// In weatherService.js
-function dateToSeed(date) {
-  // Modify this function to change how dates map to weather
-}
-```
-
-### Multiple Climate Zones
-
-To support different regions with different weather:
-
-1. **Create separate weather condition arrays** for each region
-2. **Add region parameter** to weather generation functions
-3. **Set up multiple webhooks** for different channels
-4. **Configure separate workflows** for each region
-
-### Custom Weather Events
-
-Add special weather events by modifying the weather generation logic:
-
-```javascript
-// Example: Add rare storm events
-if (rng() < 0.05) {
-  // 5% chance
-  return "Severe thunderstorm";
-}
-```
-
-## Project Structure
-
-```
-├── webhook.js                    # Daily weather sender
-├── weekly-webhook.js             # Weekly forecast sender
-├── test-webhook.js               # Local daily testing
-├── test-weekly.js                # Local weekly testing
-├── src/
-│   ├── config/config.js          # Environment variables
-│   ├── services/weatherService.js # Weather generation logic
-│   └── utils/logger.js           # Logging utilities
-├── .github/workflows/
-│   ├── daily-weather.yml         # Daily automation
-│   └── weekly-forecast.yml       # Weekly automation
-└── .env.example                  # Environment template
-```
-
-## Weather System Details
-
-- **Deterministic**: Weather is calculated from date, not random
-- **Seasonal**: Four seasons with customizable date ranges
-- **Day/Night**: Separate conditions for day and night periods
-- **Configurable**: All weather conditions and patterns can be modified
-- **Emoji Support**: Weather-appropriate emojis with day/night variations
+- `webhook.js` - Daily weather sender
+- `weekly-webhook.js` - Weekly forecast sender
+- `test-webhook.js` - Local daily testing
+- `test-weekly.js` - Local weekly testing
+- `src/services/weatherService.js` - Weather generation logic
+- `src/config/config.js` - Configuration management
+- `regions.json` - Regional weather definitions (create this)
 
 ## Troubleshooting
 
-### Common Issues
-
-**Webhook not posting**: Verify webhook URL is correct and channel permissions allow posting
-
-**Wrong timing**: Check cron expressions in workflow files and timezone calculations
-
-**Weather not changing**: Confirm date-based generation is working by testing different dates locally
-
-**Missing dependencies**: Run `npm install` if testing locally
-
-### Testing Changes
-
-Before deploying weather pattern changes:
-
-1. **Test locally** with `npm test`
-2. **Verify different dates** produce expected weather variations
-3. **Check emoji rendering** in Discord
-4. **Validate message formatting**
-
-## License
-
-MIT
+**No weather posted**: Check webhook URL and Discord channel permissions
+**Wrong timing**: Verify cron expressions in workflow files
+**Same weather daily**: Confirm regions have multiple weather conditions
+**Local testing fails**: Run `npm install` and check `.env` or `regions.json`

@@ -15,6 +15,11 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
+# Regional configuration (contains sensitive webhook URLs)
+# Use REGIONS_CONFIG environment variable for GitHub Actions instead
+# See GITHUB-SECRETS-SETUP.md for deployment instructions
+regions.json
+
 # OS files
 .DS_Store
 Thumbs.db

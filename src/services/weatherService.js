@@ -1,114 +1,37 @@
 // Simple seeded random number generator (Mulberry32)
-// This ensures deterministic weather based on date
+// This ensures deterministic weather based on date and region
 function seededRandom(seed) {
-  let a = seed;
+  let a = seed ^ 0xdeadbeef; // Change the initial seed to be offset by a constant
   return function () {
     a |= 0;
-    a = (a + 0x6d2b79f5) | 0;
-    let t = Math.imul(a ^ (a >>> 15), 1 | a);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    a = (a + 0x7f4a7c15) | 0; // Change the increment constant
+    let t = Math.imul(a ^ (a >>> 13), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 9), 61 | t)) ^ t; // Change the shift values
+    return ((t ^ (t >>> 11)) >>> 0) / 4294967296; // Change the final shift
   };
 }
 
-// Generate a seed from a date (YYYY-MM-DD format)
-function dateToSeed(date) {
+// Generate a seed from a date and region (YYYY-MM-DD format)
+function dateToSeed(date, regionId = "default") {
   const year = date.getFullYear();
   const month = date.getMonth() + 1; // 0-based to 1-based
   const day = date.getDate();
 
-  // Create a unique seed by combining year, month, and day
-  return year * 10000 + month * 100 + day;
+  // Create a unique seed by combining year, month, day, and region
+  // Use simple string hash for region to ensure different regions have different weather
+  let regionHash = 0;
+  for (let i = 0; i < regionId.length; i++) {
+    regionHash =
+      ((regionHash << 5) - regionHash + regionId.charCodeAt(i)) & 0xffffffff;
+  }
+
+  return year * 10000 + month * 100 + day + (regionHash % 1000);
 }
 
 // Seeded random integer function
 function seededRandomInt(rng, min, max) {
   return Math.floor(rng() * (max - min)) + min;
 }
-
-// Seasonal weather patterns for Western European climate
-const seasonalWeather = {
-  spring: {
-    dayConditions: [
-      "Mild and sunny",
-      "Partly cloudy with occasional showers",
-      "Light rain",
-      "Overcast with drizzle",
-      "Bright with scattered clouds",
-      "Cool and breezy",
-      "Fresh with morning mist",
-    ],
-    nightConditions: [
-      "Clear with mild temperatures",
-      "Overcast with light drizzle",
-      "Cloudy with occasional showers",
-      "Cool and misty",
-      "Partly cloudy",
-      "Cool with gentle breeze",
-      "Damp with patchy fog",
-    ],
-  },
-  summer: {
-    dayConditions: [
-      "Warm and sunny",
-      "Hot with clear skies",
-      "Partly cloudy",
-      "Thunderstorms in the afternoon",
-      "Light breeze with sunshine",
-      "Hazy sunshine",
-      "Occasional summer showers",
-    ],
-    nightConditions: [
-      "Warm with clear skies",
-      "Mild and starry",
-      "Partly cloudy",
-      "Evening thunderstorms",
-      "Gentle breeze and clear",
-      "Hazy with warm air",
-      "Light evening showers",
-    ],
-  },
-  autumn: {
-    dayConditions: [
-      "Cool and crisp",
-      "Overcast with light rain",
-      "Foggy morning clearing to sun",
-      "Blustery with heavy showers",
-      "Misty and damp",
-      "Grey skies with drizzle",
-      "Windy with scattered clouds",
-    ],
-    nightConditions: [
-      "Cool and crisp",
-      "Overcast with steady rain",
-      "Dense fog",
-      "Windy with heavy showers",
-      "Damp and misty",
-      "Drizzly and grey",
-      "Blustery with low clouds",
-    ],
-  },
-  winter: {
-    dayConditions: [
-      "Cold and frosty",
-      "Overcast with sleet",
-      "Light snow flurries",
-      "Icy conditions",
-      "Thick fog",
-      "Cold rain",
-      "Bright but freezing",
-    ],
-    nightConditions: [
-      "Frosty with clear skies",
-      "Overcast with sleet",
-      "Light snow falling",
-      "Icy and treacherous",
-      "Dense freezing fog",
-      "Cold rain continuing",
-      "Clear and bitterly cold",
-    ],
-  },
-};
 
 // Determine current season based on date
 const getSeason = (date) => {
@@ -120,12 +43,30 @@ const getSeason = (date) => {
   return "winter"; // December, January, February
 };
 
-const getWeatherForDate = (date) => {
+const getWeatherForDate = (
+  date,
+  seasonalWeatherConfig,
+  regionId = "default"
+) => {
   const season = getSeason(date);
-  const seasonData = seasonalWeather[season];
 
-  // Create a seeded random generator based on the date
-  const seed = dateToSeed(date);
+  // Require seasonal weather config - no fallback to default
+  if (!seasonalWeatherConfig) {
+    throw new Error(
+      `Seasonal weather configuration is required for region: ${regionId}`
+    );
+  }
+
+  const seasonData = seasonalWeatherConfig[season];
+
+  if (!seasonData) {
+    throw new Error(
+      `No weather data found for season '${season}' in region: ${regionId}`
+    );
+  }
+
+  // Create a seeded random generator based on the date and region
+  const seed = dateToSeed(date, regionId);
   const rng = seededRandom(seed);
 
   // Generate day weather using seeded random
@@ -168,7 +109,7 @@ const getWeatherForDate = (date) => {
   };
 };
 
-const getWeeklyForecast = () => {
+const getWeeklyForecast = (seasonalWeatherConfig, regionId = "default") => {
   const today = new Date();
   const forecast = [];
 
@@ -176,15 +117,26 @@ const getWeeklyForecast = () => {
   for (let i = 0; i < 7; i++) {
     const forecastDate = new Date(today);
     forecastDate.setDate(today.getDate() + i);
-    forecast.push(getWeatherForDate(forecastDate));
+    forecast.push(
+      getWeatherForDate(forecastDate, seasonalWeatherConfig, regionId)
+    );
   }
 
   return forecast;
 };
 
-const getWeatherUpdate = () => {
+const getWeatherUpdate = (seasonalWeatherConfig, regionId = "default") => {
   const currentDate = new Date();
-  return getWeatherForDate(currentDate);
+  return getWeatherForDate(currentDate, seasonalWeatherConfig, regionId);
+};
+
+// Regional weather functions for easier usage
+const getRegionalWeatherUpdate = (regionConfig) => {
+  return getWeatherUpdate(regionConfig.seasonalWeather, regionConfig.id);
+};
+
+const getRegionalWeeklyForecast = (regionConfig) => {
+  return getWeeklyForecast(regionConfig.seasonalWeather, regionConfig.id);
 };
 
 // Map weather conditions to appropriate emojis
@@ -288,4 +240,6 @@ module.exports = {
   getWeeklyForecast,
   getWeatherForDate,
   getWeatherEmoji,
+  getRegionalWeatherUpdate,
+  getRegionalWeeklyForecast,
 };

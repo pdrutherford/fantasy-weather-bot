@@ -1,23 +1,29 @@
 const axios = require("axios");
 const {
-  getWeatherUpdate,
+  getRegionalWeatherUpdate,
   getWeatherEmoji,
 } = require("./src/services/weatherService");
-const { config, validateConfig } = require("./src/config/config");
+const {
+  getConfiguredRegions,
+  getRegionConfig,
+} = require("./src/config/config");
 const { logger } = require("./src/utils/logger");
 
-// Validate only WEBHOOK_URL for daily webhook
-validateConfig(["WEBHOOK_URL"], ["GM_WEBHOOK_URL"]);
-
-async function sendWeatherWebhook() {
+async function sendRegionalWeatherWebhook(regionId) {
   try {
-    // Get weather data
-    const weather = getWeatherUpdate();
+    // Get region configuration
+    const regionConfig = getRegionConfig(regionId);
+    logger.info(`Sending weather update for region: ${regionConfig.name}`);
+
+    // Get weather data for this region
+    const weather = getRegionalWeatherUpdate(regionConfig);
 
     // Format the message for Discord webhook
     const weatherMessage = {
       content:
-        `📅 **Weather Update**\n` +
+        `📅 **Weather Update${
+          regionConfig.name ? ` - ${regionConfig.name}` : ""
+        }**\n` +
         `**Date:** ${weather.date}\n` +
         `**Season:** ${
           weather.season.charAt(0).toUpperCase() + weather.season.slice(1)
@@ -31,28 +37,115 @@ async function sendWeatherWebhook() {
     };
 
     // Send to Discord webhook
-    const response = await axios.post(config.WEBHOOK_URL, weatherMessage, {
+    const response = await axios.post(regionConfig.webhookUrl, weatherMessage, {
       headers: {
         "Content-Type": "application/json",
       },
     });
 
     if (response.status === 204) {
-      logger.info("Weather update posted successfully via webhook");
-      console.log("✅ Weather update posted successfully!");
+      logger.info(
+        `Weather update posted successfully for region: ${regionConfig.name}`
+      );
+      console.log(
+        `✅ Weather update posted successfully for ${regionConfig.name}!`
+      );
     } else {
-      logger.warn(`Unexpected response status: ${response.status}`);
+      logger.warn(
+        `Unexpected response status: ${response.status} for region: ${regionConfig.name}`
+      );
     }
   } catch (error) {
-    logger.error(`Failed to send weather webhook: ${error.message}`);
-    console.error("❌ Failed to send weather update:", error.message);
+    logger.error(
+      `Failed to send weather webhook for region ${regionId}: ${error.message}`
+    );
+    console.error(
+      `❌ Failed to send weather update for ${regionId}:`,
+      error.message
+    );
+    throw error; // Re-throw to allow caller to handle
+  }
+}
+
+async function sendAllRegionalWebhooks() {
+  try {
+    const configuredRegions = getConfiguredRegions();
+
+    if (configuredRegions.length === 0) {
+      logger.warn("No regions configured with webhook URLs");
+      console.log("⚠️ No regions configured with webhook URLs");
+      return;
+    }
+
+    logger.info(
+      `Sending weather updates for ${configuredRegions.length} regions`
+    );
+
+    const results = [];
+    for (const region of configuredRegions) {
+      try {
+        await sendRegionalWeatherWebhook(region.id);
+        results.push({ regionId: region.id, success: true });
+      } catch (error) {
+        results.push({
+          regionId: region.id,
+          success: false,
+          error: error.message,
+        });
+      }
+    }
+
+    // Log summary
+    const successful = results.filter((r) => r.success).length;
+    const failed = results.length - successful;
+
+    if (failed === 0) {
+      logger.info(
+        `All ${successful} regional weather updates sent successfully`
+      );
+      console.log(
+        `✅ All ${successful} regional weather updates sent successfully!`
+      );
+    } else {
+      logger.warn(
+        `${successful} successful, ${failed} failed regional weather updates`
+      );
+      console.log(
+        `⚠️ ${successful} successful, ${failed} failed regional weather updates`
+      );
+
+      // Log failures
+      results
+        .filter((r) => !r.success)
+        .forEach((result) => {
+          logger.error(`Failed region ${result.regionId}: ${result.error}`);
+        });
+    }
+
+    // Exit with error code if any failed
+    if (failed > 0) {
+      process.exit(1);
+    }
+  } catch (error) {
+    logger.error(`Failed to send regional webhooks: ${error.message}`);
+    console.error("❌ Failed to send regional webhooks:", error.message);
     process.exit(1);
   }
 }
 
 // If this script is run directly (not imported)
 if (require.main === module) {
-  sendWeatherWebhook();
+  // Check if a specific region was provided as argument
+  const regionId = process.argv[2];
+
+  if (regionId) {
+    sendRegionalWeatherWebhook(regionId);
+  } else {
+    sendAllRegionalWebhooks();
+  }
 }
 
-module.exports = { sendWeatherWebhook };
+module.exports = {
+  sendRegionalWeatherWebhook,
+  sendAllRegionalWebhooks,
+};

@@ -21,8 +21,17 @@ Webhook service that posts daily weather updates for fictional campaigns to Disc
 
 ## Environment Variables
 
-- `WEBHOOK_URL`: Discord webhook URL for daily updates (required)
-- `GM_WEBHOOK_URL`: Discord webhook URL for weekly GM forecasts (optional)
+**Configuration:**
+
+- `REGIONS_CONFIG`: Complete regions.json as JSON string (GitHub Actions only)
+- `WEEKLY_FORECAST_WEBHOOK_URL`: Consolidated weekly forecasts (optional)
+
+**Local Development:**
+
+- Create `regions.json` in project root with webhook URLs
+- File paths checked in order: `regions.json`, `config/regions.json`, `src/config/custom-regions.json`, `src/config/regions.json`, `src/config/regions-example.json`
+
+**Security:** `regions.json` contains sensitive webhook URLs and must not be committed. Use `REGIONS_CONFIG` environment variable for GitHub Actions.
 
 ## Common Tasks
 

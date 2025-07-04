@@ -1,0 +1,351 @@
+{
+  "regions": {
+    "northern_england": {
+      "name": "Northern England (600 AD)",
+      "webhookUrl": "https://discord.com/api/webhooks/YOUR_NORTHERN_WEBHOOK_ID/YOUR_TOKEN",
+      "seasonalWeather": {
+        "spring": {
+          "dayConditions": [
+            "Chilly drizzle",
+            "Bleak leaden skies",
+            "Cold rain over the moors",
+            "Early morning frost",
+            "Weak sunshine through cloud",
+            "Biting northerly wind",
+            "Creeping mist"
+          ],
+          "nightConditions": [
+            "Sharp ground frost",
+            "Long chilly night",
+            "Freezing drizzle",
+            "Still, cold air",
+            "Howling wind over hills",
+            "Damp night fog",
+            "Bone-chilling cold"
+          ]
+        },
+        "summer": {
+          "dayConditions": [
+            "Cool overcast day",
+            "Short burst of pale sun",
+            "Persistent light drizzle",
+            "Windy with scattered rain",
+            "Grey unbroken cloud",
+            "Rare mild spell",
+            "Muggy but cloudy"
+          ],
+          "nightConditions": [
+            "Cool and damp",
+            "Late-sunset chill",
+            "Drizzly darkness",
+            "Quiet cool air",
+            "Wind rustling heather",
+            "Hill-fog rolling in",
+            "Chilly summer night"
+          ]
+        },
+        "autumn": {
+          "dayConditions": [
+            "Cold morning mist",
+            "Blustery showers",
+            "Overcast and damp",
+            "Early frost on fields",
+            "Gloomy steel-grey sky",
+            "Strong northerly gale",
+            "Sporadic sleet"
+          ],
+          "nightConditions": [
+            "Freezing winds",
+            "Long cold darkness",
+            "Steady cold rain",
+            "Frost forming",
+            "Whistling wind through trees",
+            "Damp and frigid",
+            "Sleet turning to snow"
+          ]
+        },
+        "winter": {
+          "dayConditions": [
+            "Harsh snowstorm",
+            "Icy cutting winds",
+            "Bleak midwinter sun",
+            "Deep drifting snow",
+            "Freezing rain",
+            "Grey blizzard sky",
+            "Biting sub-zero cold"
+          ],
+          "nightConditions": [
+            "Bitter severe frost",
+            "Endless polar-like night",
+            "Cutting wind over fells",
+            "Snowdrifts building",
+            "Ice-laden air",
+            "Frozen hard ground",
+            "Unforgiving cold"
+          ]
+        }
+      }
+    },
+
+    "eastern_england": {
+      "name": "Eastern England (600 AD)",
+      "webhookUrl": "https://discord.com/api/webhooks/YOUR_EASTERN_WEBHOOK_ID/YOUR_TOKEN",
+      "seasonalWeather": {
+        "spring": {
+          "dayConditions": [
+            "Cool dry breeze",
+            "Patchy sunshine",
+            "Light coastal fog",
+            "Chilly east wind",
+            "Clear sky with nip",
+            "Scudding clouds",
+            "Early sowing weather"
+          ],
+          "nightConditions": [
+            "Cold but clear",
+            "Sea-mist drifting in",
+            "Quiet cool darkness",
+            "Frost glittering",
+            "Whispering marsh wind",
+            "Still starry chill",
+            "Brisk night air"
+          ]
+        },
+        "summer": {
+          "dayConditions": [
+            "Warm dry day",
+            "Bright sunshine",
+            "Gentle easterly breeze",
+            "Dry fields under sun",
+            "Hazy afternoon heat",
+            "Intermittent cloud",
+            "Sultry harvest weather"
+          ],
+          "nightConditions": [
+            "Pleasant mild night",
+            "Soft coastal breeze",
+            "Clear with dew",
+            "Warm twilight glow",
+            "Crickets in dry grass",
+            "Calm starry sky",
+            "Light summer haze"
+          ]
+        },
+        "autumn": {
+          "dayConditions": [
+            "Crisp clear morning",
+            "Dry harvested fields",
+            "Cool easterly wind",
+            "Low drifting cloud",
+            "Turning leaves under sun",
+            "Fresh bright day",
+            "First cold gusts"
+          ],
+          "nightConditions": [
+            "Sharp chill",
+            "Mist along rivers",
+            "Cold starlit night",
+            "Dry rustling leaves",
+            "Early ground frost",
+            "Quiet clear darkness",
+            "Brisk air"
+          ]
+        },
+        "winter": {
+          "dayConditions": [
+            "Raw east wind",
+            "Dry powdery snow",
+            "Pale weak sun",
+            "Freezing hard ground",
+            "Icy road frost",
+            "Grey bitter daylight",
+            "Cutting sea-spray chill"
+          ],
+          "nightConditions": [
+            "Hard freeze",
+            "Piercing wind",
+            "Still frozen silence",
+            "Crackling ice",
+            "Star-bright cold",
+            "Lingering frost fog",
+            "Severe chill"
+          ]
+        }
+      }
+    },
+
+    "southern_england": {
+      "name": "Southern England (600 AD)",
+      "webhookUrl": "https://discord.com/api/webhooks/YOUR_SOUTHERN_WEBHOOK_ID/YOUR_TOKEN",
+      "seasonalWeather": {
+        "spring": {
+          "dayConditions": [
+            "Mild fresh breeze",
+            "Greening countryside",
+            "Soft rainfall",
+            "Brightening skies",
+            "Gentle sunshine",
+            "Early blossoms",
+            "Patchy cloud"
+          ],
+          "nightConditions": [
+            "Cool gentle air",
+            "Light spring drizzle",
+            "Calm clear night",
+            "Dew settling",
+            "Soft coastal wind",
+            "Thin mist",
+            "Mild starry skies"
+          ]
+        },
+        "summer": {
+          "dayConditions": [
+            "Warm sunny day",
+            "Balmy gentle breeze",
+            "Occasional shower",
+            "Golden harvest sun",
+            "Hazy afternoon warmth",
+            "Pleasant clear sky",
+            "Light sea air"
+          ],
+          "nightConditions": [
+            "Comfortable warmth",
+            "Soft night breeze",
+            "Clear with faint chill",
+            "Short summer darkness",
+            "Dewy calm",
+            "Mild maritime air",
+            "Quiet balmy night"
+          ]
+        },
+        "autumn": {
+          "dayConditions": [
+            "Gentle cooling",
+            "Soft autumn rain",
+            "Misty dawn",
+            "Calm overcast",
+            "Golden leaves",
+            "Fresh orchard air",
+            "Breezy showers"
+          ],
+          "nightConditions": [
+            "Cool damp night",
+            "Rolling fog banks",
+            "Quiet drizzle",
+            "Calm chilly air",
+            "Early frost patches",
+            "Moist woodland scent",
+            "Still cool darkness"
+          ]
+        },
+        "winter": {
+          "dayConditions": [
+            "Cool grey day",
+            "Cold rain showers",
+            "Occasional sleet",
+            "Weak winter sun",
+            "Damp chilled air",
+            "Overcast drizzle",
+            "Rare light snow"
+          ],
+          "nightConditions": [
+            "Cold damp darkness",
+            "Persistent drizzle",
+            "Chilly but above freezing",
+            "Fog shrouded",
+            "Still wet chill",
+            "Frost in sheltered spots",
+            "Long damp night"
+          ]
+        }
+      }
+    },
+
+    "western_england": {
+      "name": "Western England (600 AD)",
+      "webhookUrl": "https://discord.com/api/webhooks/YOUR_WESTERN_WEBHOOK_ID/YOUR_TOKEN",
+      "seasonalWeather": {
+        "spring": {
+          "dayConditions": [
+            "Frequent Atlantic showers",
+            "Bright spells between rain",
+            "Blustery winds",
+            "Rain-washed fields",
+            "Rainbow skies",
+            "Soft sunshine",
+            "Lush greening land"
+          ],
+          "nightConditions": [
+            "Gentle rain on thatch",
+            "Moist mild air",
+            "Wind rattling shutters",
+            "Drizzly darkness",
+            "Fresh wet scent",
+            "Calm after rain",
+            "Mist rising from rivers"
+          ]
+        },
+        "summer": {
+          "dayConditions": [
+            "Warm and humid",
+            "Sudden heavy shower",
+            "Sun-break through cloud",
+            "Rolling thunder afar",
+            "Pleasant sunny spells",
+            "Moist sea breeze",
+            "Changeable skies"
+          ],
+          "nightConditions": [
+            "Muggy calm",
+            "Light rain passing",
+            "Mild moist air",
+            "Soft coastal wind",
+            "Cloudy warm night",
+            "Distant thunder rumbles",
+            "Calm star-peep"
+          ]
+        },
+        "autumn": {
+          "dayConditions": [
+            "Heavy persistent rain",
+            "Windy with squalls",
+            "Brief sunny gap",
+            "Low cloud over hills",
+            "Moss-damp forests",
+            "Cool Atlantic breeze",
+            "Drizzle soaked day"
+          ],
+          "nightConditions": [
+            "Driving rain",
+            "Howling wind",
+            "Sodden darkness",
+            "Fog off the estuary",
+            "Cold wet night",
+            "Rattling branches",
+            "Restless storm clouds"
+          ]
+        },
+        "winter": {
+          "dayConditions": [
+            "Relentless rain",
+            "Gale-force wind",
+            "Sleet in bursts",
+            "Low grey gloom",
+            "Flooded lanes",
+            "Cold damp chill",
+            "Rare wet snow"
+          ],
+          "nightConditions": [
+            "Storm-lashed night",
+            "Fierce coastal gale",
+            "Icy driving rain",
+            "Long wet darkness",
+            "Chill seeping cold",
+            "Roaring winds",
+            "Water-soaked ground"
+          ]
+        }
+      }
+    }
+  }
+}

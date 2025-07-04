@@ -24,5 +24,9 @@ jobs:
 
       - name: Send weekly weather forecast
         env:
-          GM_WEBHOOK_URL: ${{ secrets.GM_WEBHOOK_URL }}
+          # Regional configuration (JSON string containing all regions with webhook URLs)
+          REGIONS_CONFIG: ${{ secrets.REGIONS_CONFIG }}
+
+          # Weekly forecast webhook URL (for consolidated weekly forecasts)
+          WEEKLY_FORECAST_WEBHOOK_URL: ${{ secrets.WEEKLY_FORECAST_WEBHOOK_URL }}
         run: npm run weekly

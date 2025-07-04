@@ -28,5 +28,9 @@ jobs:
 
       - name: Send weather update
         env:
-          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+          # Regional configuration (JSON string containing all regions with webhook URLs)
+          REGIONS_CONFIG: ${{ secrets.REGIONS_CONFIG }}
+
+          # Weekly forecast webhook URL (for consolidated weekly forecasts)
+          WEEKLY_FORECAST_WEBHOOK_URL: ${{ secrets.WEEKLY_FORECAST_WEBHOOK_URL }}
         run: npm start
