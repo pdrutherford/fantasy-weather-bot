@@ -181,6 +181,34 @@ const validateRegionDefinition = (regionId, regionData) => {
           `Region '${regionId}' season '${season}' nightConditions cannot be empty`
         );
       }
+
+      // Validate mechanicalImpacts if it exists (optional field)
+      if (seasonData.mechanicalImpacts) {
+        if (
+          typeof seasonData.mechanicalImpacts !== "object" ||
+          Array.isArray(seasonData.mechanicalImpacts)
+        ) {
+          errors.push(
+            `Region '${regionId}' season '${season}' mechanicalImpacts must be an object`
+          );
+        } else {
+          // Check that mechanical impacts reference valid weather conditions
+          Object.keys(seasonData.mechanicalImpacts).forEach((condition) => {
+            const isValidDayCondition =
+              seasonData.dayConditions &&
+              seasonData.dayConditions.includes(condition);
+            const isValidNightCondition =
+              seasonData.nightConditions &&
+              seasonData.nightConditions.includes(condition);
+
+            if (!isValidDayCondition && !isValidNightCondition) {
+              errors.push(
+                `Region '${regionId}' season '${season}' mechanicalImpacts references unknown condition: '${condition}'`
+              );
+            }
+          });
+        }
+      }
     }
   }
 
@@ -225,6 +253,10 @@ const createRegionTemplate = (regionId, regionName) => {
           "Gentle spring breeze",
           "Pleasant spring night",
         ],
+        mechanicalImpacts: {
+          "Spring showers":
+            "Movement cost +1 for all units on roads, +2 for cavalry in fields",
+        },
       },
       summer: {
         dayConditions: [
@@ -241,6 +273,11 @@ const createRegionTemplate = (regionId, regionName) => {
           "Comfortable summer temperatures",
           "Pleasant summer evening",
         ],
+        mechanicalImpacts: {
+          "Summer heat": "All units take 1 fatigue per turn in open terrain",
+          "Intense summer sun":
+            "All units take 1 fatigue per turn in open terrain",
+        },
       },
       autumn: {
         dayConditions: [
@@ -273,6 +310,13 @@ const createRegionTemplate = (regionId, regionName) => {
           "Winter freeze",
           "Icy winter night",
         ],
+        mechanicalImpacts: {
+          "Freezing temperatures":
+            "All units take 1 fatigue per turn in open terrain",
+          "Harsh winter conditions":
+            "Movement cost +2 for all units, +3 for cavalry, all units take 1 fatigue per turn",
+          "Winter freeze": "All units take 1 fatigue per turn in open terrain",
+        },
       },
     },
   };

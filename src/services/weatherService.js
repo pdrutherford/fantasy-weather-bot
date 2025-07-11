@@ -85,6 +85,11 @@ const getWeatherForDate = (
   );
   const nightCondition = seasonData.nightConditions[nightConditionIndex];
 
+  // Get mechanical impacts if they exist
+  const mechanicalImpacts = seasonData.mechanicalImpacts || {};
+  const dayMechanicalImpact = mechanicalImpacts[dayCondition] || null;
+  const nightMechanicalImpact = mechanicalImpacts[nightCondition] || null;
+
   // Format date
   const formattedDate = date.toLocaleDateString("en-US", {
     month: "long",
@@ -102,9 +107,11 @@ const getWeatherForDate = (
     season: season,
     day: {
       condition: dayCondition,
+      mechanicalImpact: dayMechanicalImpact,
     },
     night: {
       condition: nightCondition,
+      mechanicalImpact: nightMechanicalImpact,
     },
   };
 };

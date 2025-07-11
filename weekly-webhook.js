@@ -150,10 +150,24 @@ async function sendConsolidatedWeeklyForecastWebhook() {
             }\n` +
             `${getWeatherEmoji(dayWeather.day.condition, false)} Day: ${
               dayWeather.day.condition
-            }\n` +
-            `${getWeatherEmoji(dayWeather.night.condition, true)} Night: ${
-              dayWeather.night.condition
-            }\n\n`;
+            }\n`;
+
+          // Add mechanical impact for day weather if it exists
+          if (dayWeather.day.mechanicalImpact) {
+            consolidatedMessage += `⚠️ **Day Effect:** *${dayWeather.day.mechanicalImpact}*\n`;
+          }
+
+          consolidatedMessage += `${getWeatherEmoji(
+            dayWeather.night.condition,
+            true
+          )} Night: ${dayWeather.night.condition}\n`;
+
+          // Add mechanical impact for night weather if it exists
+          if (dayWeather.night.mechanicalImpact) {
+            consolidatedMessage += `⚠️ **Night Effect:** *${dayWeather.night.mechanicalImpact}*\n`;
+          }
+
+          consolidatedMessage += `\n`;
         });
 
         consolidatedMessage += "─────────────────────────────\n\n";
