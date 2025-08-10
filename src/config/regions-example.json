@@ -22,7 +22,17 @@
             "Howling wind over hills",
             "Damp night fog",
             "Bone-chilling cold"
-          ]
+          ],
+          "mechanicalImpacts": {
+            "Chilly drizzle": "Scouting range reduced by 1 hex",
+            "Bleak leaden skies": "Scouting range reduced by 1 hex",
+            "Cold rain over the moors": "Scouting range reduced by 1 hex",
+            "Biting northerly wind": "Scouting range reduced by 1 hex",
+            "Creeping mist": "Scouting range reduced by 1 hex",
+            "Freezing drizzle": "Scouting range reduced by 1 hex",
+            "Howling wind over hills": "Movement speed & scouting range reduced by 1 hex",
+            "Damp night fog": "Scouting range reduced by 1 hex"
+          }
         },
         "summer": {
           "dayConditions": [
@@ -42,7 +52,18 @@
             "Wind rustling heather",
             "Hill-fog rolling in",
             "Chilly summer night"
-          ]
+          ],
+          "mechanicalImpacts": {
+            "Cool overcast day": "Scouting range reduced by 1 hex",
+            "Persistent light drizzle": "Scouting range reduced by 1 hex",
+            "Windy with scattered rain": "Scouting range reduced by 1 hex",
+            "Grey unbroken cloud": "Scouting range reduced by 1 hex",
+            "Muggy but cloudy": "Scouting range reduced by 1 hex",
+            "Cool and damp": "Scouting range reduced by 1 hex",
+            "Drizzly darkness": "Scouting range reduced by 1 hex",
+            "Wind rustling heather": "Scouting range reduced by 1 hex",
+            "Hill-fog rolling in": "Scouting range reduced by 1 hex"
+          }
         },
         "autumn": {
           "dayConditions": [
@@ -62,7 +83,20 @@
             "Whistling wind through trees",
             "Damp and frigid",
             "Sleet turning to snow"
-          ]
+          ],
+          "mechanicalImpacts": {
+            "Cold morning mist": "Scouting range reduced by 1 hex",
+            "Blustery showers": "Movement speed & scouting range reduced by 1 hex",
+            "Overcast and damp": "Scouting range reduced by 1 hex",
+            "Gloomy steel-grey sky": "Scouting range reduced by 1 hex",
+            "Strong northerly gale": "Movement speed & scouting range reduced by 1 hex",
+            "Sporadic sleet": "Scouting range reduced by 1 hex",
+            "Freezing winds": "Movement speed & scouting range reduced by 1 hex",
+            "Steady cold rain": "Scouting range reduced by 1 hex",
+            "Whistling wind through trees": "Movement speed & scouting range reduced by 1 hex",
+            "Damp and frigid": "Scouting range reduced by 1 hex",
+            "Sleet turning to snow": "Movement speed & scouting range reduced by 1 hex"
+          }
         },
         "winter": {
           "dayConditions": [
@@ -82,7 +116,20 @@
             "Ice-laden air",
             "Frozen hard ground",
             "Unforgiving cold"
-          ]
+          ],
+          "mechanicalImpacts": {
+            "Harsh snowstorm": "Movement speed & scouting range reduced by 1 hex",
+            "Icy cutting winds": "Movement speed & scouting range reduced by 1 hex",
+            "Deep drifting snow": "Movement speed & scouting range reduced by 1 hex",
+            "Freezing rain": "Movement speed & scouting range reduced by 1 hex",
+            "Grey blizzard sky": "Movement speed & scouting range reduced by 1 hex",
+            "Biting sub-zero cold": "Movement speed & scouting range reduced by 1 hex",
+            "Bitter severe frost": "Movement speed & scouting range reduced by 1 hex",
+            "Cutting wind over fells": "Movement speed & scouting range reduced by 1 hex",
+            "Snowdrifts building": "Movement speed & scouting range reduced by 1 hex",
+            "Ice-laden air": "Movement speed & scouting range reduced by 1 hex",
+            "Unforgiving cold": "Movement speed & scouting range reduced by 1 hex"
+          }
         }
       }
     },
@@ -109,7 +156,14 @@
             "Whispering marsh wind",
             "Still starry chill",
             "Brisk night air"
-          ]
+          ],
+          "mechanicalImpacts": {
+            "Light coastal fog": "Scouting range reduced by 1 hex",
+            "Chilly east wind": "Scouting range reduced by 1 hex",
+            "Scudding clouds": "Scouting range reduced by 1 hex",
+            "Sea-mist drifting in": "Scouting range reduced by 1 hex",
+            "Whispering marsh wind": "Scouting range reduced by 1 hex"
+          }
         },
         "summer": {
           "dayConditions": [
@@ -129,7 +183,13 @@
             "Crickets in dry grass",
             "Calm starry sky",
             "Light summer haze"
-          ]
+          ],
+          "mechanicalImpacts": {
+            "Hazy afternoon heat": "Scouting range reduced by 1 hex",
+            "Intermittent cloud": "Scouting range reduced by 1 hex",
+            "Sultry harvest weather": "Scouting range reduced by 1 hex",
+            "Light summer haze": "Scouting range reduced by 1 hex"
+          }
         },
         "autumn": {
           "dayConditions": [
@@ -149,7 +209,14 @@
             "Early ground frost",
             "Quiet clear darkness",
             "Brisk air"
-          ]
+          ],
+          "mechanicalImpacts": {
+            "Cool easterly wind": "Scouting range reduced by 1 hex",
+            "Low drifting cloud": "Scouting range reduced by 1 hex",
+            "First cold gusts": "Scouting range reduced by 1 hex",
+            "Sharp chill": "Scouting range reduced by 1 hex",
+            "Mist along rivers": "Scouting range reduced by 1 hex"
+          }
         },
         "winter": {
           "dayConditions": [
@@ -169,7 +236,20 @@
             "Star-bright cold",
             "Lingering frost fog",
             "Severe chill"
-          ]
+          ],
+          "mechanicalImpacts": {
+            "Raw east wind": "Movement speed & scouting range reduced by 1 hex",
+            "Dry powdery snow": "Scouting range reduced by 1 hex",
+            "Freezing hard ground": "Movement speed & scouting range reduced by 1 hex",
+            "Icy road frost": "Movement speed & scouting range reduced by 1 hex",
+            "Grey bitter daylight": "Scouting range reduced by 1 hex",
+            "Cutting sea-spray chill": "Movement speed & scouting range reduced by 1 hex",
+            "Hard freeze": "Movement speed & scouting range reduced by 1 hex",
+            "Piercing wind": "Movement speed & scouting range reduced by 1 hex",
+            "Crackling ice": "Movement speed & scouting range reduced by 1 hex",
+            "Lingering frost fog": "Scouting range reduced by 1 hex",
+            "Severe chill": "Movement speed & scouting range reduced by 1 hex"
+          }
         }
       }
     },
@@ -196,7 +276,13 @@
             "Soft coastal wind",
             "Thin mist",
             "Mild starry skies"
-          ]
+          ],
+          "mechanicalImpacts": {
+            "Soft rainfall": "Scouting range reduced by 1 hex",
+            "Patchy cloud": "Scouting range reduced by 1 hex",
+            "Light spring drizzle": "Scouting range reduced by 1 hex",
+            "Thin mist": "Scouting range reduced by 1 hex"
+          }
         },
         "summer": {
           "dayConditions": [
@@ -216,7 +302,11 @@
             "Dewy calm",
             "Mild maritime air",
             "Quiet balmy night"
-          ]
+          ],
+          "mechanicalImpacts": {
+            "Occasional shower": "Scouting range reduced by 1 hex",
+            "Hazy afternoon warmth": "Scouting range reduced by 1 hex"
+          }
         },
         "autumn": {
           "dayConditions": [
@@ -236,7 +326,16 @@
             "Early frost patches",
             "Moist woodland scent",
             "Still cool darkness"
-          ]
+          ],
+          "mechanicalImpacts": {
+            "Soft autumn rain": "Scouting range reduced by 1 hex",
+            "Misty dawn": "Scouting range reduced by 1 hex",
+            "Calm overcast": "Scouting range reduced by 1 hex",
+            "Breezy showers": "Scouting range reduced by 1 hex",
+            "Cool damp night": "Scouting range reduced by 1 hex",
+            "Rolling fog banks": "Scouting range reduced by 1 hex",
+            "Quiet drizzle": "Scouting range reduced by 1 hex"
+          }
         },
         "winter": {
           "dayConditions": [
@@ -256,7 +355,20 @@
             "Still wet chill",
             "Frost in sheltered spots",
             "Long damp night"
-          ]
+          ],
+          "mechanicalImpacts": {
+            "Cool grey day": "Scouting range reduced by 1 hex",
+            "Cold rain showers": "Scouting range reduced by 1 hex",
+            "Occasional sleet": "Scouting range reduced by 1 hex",
+            "Damp chilled air": "Scouting range reduced by 1 hex",
+            "Overcast drizzle": "Scouting range reduced by 1 hex",
+            "Rare light snow": "Scouting range reduced by 1 hex",
+            "Cold damp darkness": "Scouting range reduced by 1 hex",
+            "Persistent drizzle": "Scouting range reduced by 1 hex",
+            "Fog shrouded": "Scouting range reduced by 1 hex",
+            "Still wet chill": "Scouting range reduced by 1 hex",
+            "Long damp night": "Scouting range reduced by 1 hex"
+          }
         }
       }
     },
@@ -283,7 +395,17 @@
             "Fresh wet scent",
             "Calm after rain",
             "Mist rising from rivers"
-          ]
+          ],
+          "mechanicalImpacts": {
+            "Frequent Atlantic showers": "Scouting range reduced by 1 hex",
+            "Blustery winds": "Movement speed & scouting range reduced by 1 hex",
+            "Rain-washed fields": "Scouting range reduced by 1 hex",
+            "Rainbow skies": "Scouting range reduced by 1 hex",
+            "Gentle rain on thatch": "Scouting range reduced by 1 hex",
+            "Wind rattling shutters": "Movement speed & scouting range reduced by 1 hex",
+            "Drizzly darkness": "Scouting range reduced by 1 hex",
+            "Mist rising from rivers": "Scouting range reduced by 1 hex"
+          }
         },
         "summer": {
           "dayConditions": [
@@ -303,7 +425,17 @@
             "Cloudy warm night",
             "Distant thunder rumbles",
             "Calm star-peep"
-          ]
+          ],
+          "mechanicalImpacts": {
+            "Warm and humid": "Scouting range reduced by 1 hex",
+            "Sudden heavy shower": "Movement speed & scouting range reduced by 1 hex",
+            "Rolling thunder afar": "Scouting range reduced by 1 hex",
+            "Changeable skies": "Scouting range reduced by 1 hex",
+            "Muggy calm": "Scouting range reduced by 1 hex",
+            "Light rain passing": "Scouting range reduced by 1 hex",
+            "Cloudy warm night": "Scouting range reduced by 1 hex",
+            "Distant thunder rumbles": "Scouting range reduced by 1 hex"
+          }
         },
         "autumn": {
           "dayConditions": [
@@ -323,7 +455,22 @@
             "Cold wet night",
             "Rattling branches",
             "Restless storm clouds"
-          ]
+          ],
+          "mechanicalImpacts": {
+            "Heavy persistent rain": "Movement speed & scouting range reduced by 1 hex",
+            "Windy with squalls": "Movement speed & scouting range reduced by 1 hex",
+            "Low cloud over hills": "Scouting range reduced by 1 hex",
+            "Moss-damp forests": "Scouting range reduced by 1 hex",
+            "Cool Atlantic breeze": "Scouting range reduced by 1 hex",
+            "Drizzle soaked day": "Scouting range reduced by 1 hex",
+            "Driving rain": "Movement speed & scouting range reduced by 1 hex",
+            "Howling wind": "Movement speed & scouting range reduced by 1 hex",
+            "Sodden darkness": "Scouting range reduced by 1 hex",
+            "Fog off the estuary": "Scouting range reduced by 1 hex",
+            "Cold wet night": "Scouting range reduced by 1 hex",
+            "Rattling branches": "Movement speed & scouting range reduced by 1 hex",
+            "Restless storm clouds": "Scouting range reduced by 1 hex"
+          }
         },
         "winter": {
           "dayConditions": [
@@ -343,7 +490,23 @@
             "Chill seeping cold",
             "Roaring winds",
             "Water-soaked ground"
-          ]
+          ],
+          "mechanicalImpacts": {
+            "Relentless rain": "Movement speed & scouting range reduced by 1 hex",
+            "Gale-force wind": "Movement speed & scouting range reduced by 1 hex",
+            "Sleet in bursts": "Movement speed & scouting range reduced by 1 hex",
+            "Low grey gloom": "Scouting range reduced by 1 hex",
+            "Flooded lanes": "Movement speed & scouting range reduced by 1 hex",
+            "Cold damp chill": "Scouting range reduced by 1 hex",
+            "Rare wet snow": "Scouting range reduced by 1 hex",
+            "Storm-lashed night": "Movement speed & scouting range reduced by 1 hex",
+            "Fierce coastal gale": "Movement speed & scouting range reduced by 1 hex",
+            "Icy driving rain": "Movement speed & scouting range reduced by 1 hex",
+            "Long wet darkness": "Scouting range reduced by 1 hex",
+            "Chill seeping cold": "Scouting range reduced by 1 hex",
+            "Roaring winds": "Movement speed & scouting range reduced by 1 hex",
+            "Water-soaked ground": "Scouting range reduced by 1 hex"
+          }
         }
       }
     }

@@ -14,19 +14,37 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Check blackout window
+        id: check-date
+        run: |
+          TODAY=$(date -u +%Y-%m-%d)
+          echo "Today (UTC): $TODAY"
+          # Blackout inclusive window: 2025-08-11 through 2025-08-17
+          if [[ "$TODAY" > "2025-08-10" && "$TODAY" < "2025-08-18" ]]; then
+            echo "Within blackout window, skipping daily weather run.";
+            echo "blackout=true" >> $GITHUB_OUTPUT
+          else
+            echo "Outside blackout window, proceeding.";
+            echo "blackout=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Checkout repository
+        if: steps.check-date.outputs.blackout == 'false'
         uses: actions/checkout@v4
 
       - name: Setup Node.js
+        if: steps.check-date.outputs.blackout == 'false'
         uses: actions/setup-node@v4
         with:
           node-version: "18"
           cache: "npm"
 
       - name: Install dependencies
+        if: steps.check-date.outputs.blackout == 'false'
         run: npm ci
 
       - name: Send weather update
+        if: steps.check-date.outputs.blackout == 'false'
         env:
           # Regional configuration (JSON string containing all regions with webhook URLs)
           REGIONS_CONFIG: ${{ secrets.REGIONS_CONFIG }}
