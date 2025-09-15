@@ -60,23 +60,15 @@ async function testRegionalWeatherWebhook(regionId) {
       `**Season:** ${
         weather.season.charAt(0).toUpperCase() + weather.season.slice(1)
       }\n` +
-      `${getWeatherEmoji(weather.day.condition, false)} **Day:** ${
-        weather.day.condition
+      `${getWeatherEmoji(weather.condition, false)} **Weather:** ${
+        weather.condition
       }\n`;
 
-    // Add mechanical impact for day weather if it exists
-    if (weather.day.mechanicalImpact) {
-      messageContent += `⚠️ *${weather.day.mechanicalImpact}*\n`;
-    }
-
-    messageContent += `${getWeatherEmoji(
-      weather.night.condition,
-      true
-    )} **Night:** ${weather.night.condition}\n`;
-
-    // Add mechanical impact for night weather if it exists
-    if (weather.night.mechanicalImpact) {
-      messageContent += `⚠️ *${weather.night.mechanicalImpact}*\n`;
+    // Add mechanical impacts if any
+    if (Array.isArray(weather.impacts) && weather.impacts.length > 0) {
+      weather.impacts.forEach((impact) => {
+        messageContent += `⚠️ ${impact}\n`;
+      });
     }
 
     // Send to mock webhook

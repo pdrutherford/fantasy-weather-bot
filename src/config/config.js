@@ -150,39 +150,18 @@ const validateRegionDefinition = (regionId, regionData) => {
       }
 
       const seasonData = regionData.seasonalWeather[season];
-      if (
-        !seasonData.dayConditions ||
-        !Array.isArray(seasonData.dayConditions)
-      ) {
+      // Require single 'conditions' array only
+      if (!Array.isArray(seasonData.conditions)) {
         errors.push(
-          `Region '${regionId}' season '${season}' missing or invalid dayConditions array`
+          `Region '${regionId}' season '${season}' must define a 'conditions' array`
         );
-      }
-      if (
-        !seasonData.nightConditions ||
-        !Array.isArray(seasonData.nightConditions)
-      ) {
+      } else if (seasonData.conditions.length === 0) {
         errors.push(
-          `Region '${regionId}' season '${season}' missing or invalid nightConditions array`
+          `Region '${regionId}' season '${season}' conditions cannot be empty`
         );
       }
 
-      // Check for empty arrays
-      if (seasonData.dayConditions && seasonData.dayConditions.length === 0) {
-        errors.push(
-          `Region '${regionId}' season '${season}' dayConditions cannot be empty`
-        );
-      }
-      if (
-        seasonData.nightConditions &&
-        seasonData.nightConditions.length === 0
-      ) {
-        errors.push(
-          `Region '${regionId}' season '${season}' nightConditions cannot be empty`
-        );
-      }
-
-      // Validate mechanicalImpacts if it exists (optional field)
+      // Validate mechanicalImpacts if it exists (optional) against 'conditions'
       if (seasonData.mechanicalImpacts) {
         if (
           typeof seasonData.mechanicalImpacts !== "object" ||
@@ -192,16 +171,9 @@ const validateRegionDefinition = (regionId, regionData) => {
             `Region '${regionId}' season '${season}' mechanicalImpacts must be an object`
           );
         } else {
-          // Check that mechanical impacts reference valid weather conditions
+          const known = new Set(seasonData.conditions || []);
           Object.keys(seasonData.mechanicalImpacts).forEach((condition) => {
-            const isValidDayCondition =
-              seasonData.dayConditions &&
-              seasonData.dayConditions.includes(condition);
-            const isValidNightCondition =
-              seasonData.nightConditions &&
-              seasonData.nightConditions.includes(condition);
-
-            if (!isValidDayCondition && !isValidNightCondition) {
+            if (!known.has(condition)) {
               errors.push(
                 `Region '${regionId}' season '${season}' mechanicalImpacts references unknown condition: '${condition}'`
               );
@@ -239,84 +211,40 @@ const createRegionTemplate = (regionId, regionName) => {
       "https://discord.com/api/webhooks/YOUR_WEBHOOK_ID/YOUR_WEBHOOK_TOKEN",
     seasonalWeather: {
       spring: {
-        dayConditions: [
+        conditions: [
           "Mild spring weather",
           "Pleasant spring day",
           "Spring showers",
           "Warming temperatures",
           "Fresh spring air",
         ],
-        nightConditions: [
-          "Cool spring night",
-          "Clear spring evening",
-          "Mild spring temperatures",
-          "Gentle spring breeze",
-          "Pleasant spring night",
-        ],
-        mechanicalImpacts: {
-          "Spring showers":
-            "Movement cost +1 for all units on roads, +2 for cavalry in fields",
-        },
       },
       summer: {
-        dayConditions: [
+        conditions: [
           "Warm summer day",
           "Hot and sunny",
           "Summer heat",
           "Bright summer weather",
           "Intense summer sun",
         ],
-        nightConditions: [
-          "Warm summer night",
-          "Balmy evening",
-          "Summer night breeze",
-          "Comfortable summer temperatures",
-          "Pleasant summer evening",
-        ],
-        mechanicalImpacts: {
-          "Summer heat": "All units take 1 fatigue per turn in open terrain",
-          "Intense summer sun":
-            "All units take 1 fatigue per turn in open terrain",
-        },
       },
       autumn: {
-        dayConditions: [
+        conditions: [
           "Crisp autumn day",
           "Fall weather",
           "Changing seasons",
           "Autumn breeze",
           "Cool autumn temperatures",
         ],
-        nightConditions: [
-          "Chilly autumn night",
-          "Fall evening",
-          "Cool autumn air",
-          "Crisp autumn night",
-          "Autumn chill",
-        ],
       },
       winter: {
-        dayConditions: [
+        conditions: [
           "Cold winter day",
           "Winter chill",
           "Freezing temperatures",
           "Winter weather",
           "Harsh winter conditions",
         ],
-        nightConditions: [
-          "Frigid winter night",
-          "Freezing winter evening",
-          "Bitter cold night",
-          "Winter freeze",
-          "Icy winter night",
-        ],
-        mechanicalImpacts: {
-          "Freezing temperatures":
-            "All units take 1 fatigue per turn in open terrain",
-          "Harsh winter conditions":
-            "Movement cost +2 for all units, +3 for cavalry, all units take 1 fatigue per turn",
-          "Winter freeze": "All units take 1 fatigue per turn in open terrain",
-        },
       },
     },
   };

@@ -28,10 +28,7 @@ function dateToSeed(date, regionId = "default") {
   return year * 10000 + month * 100 + day + (regionHash % 1000);
 }
 
-// Seeded random integer function
-function seededRandomInt(rng, min, max) {
-  return Math.floor(rng() * (max - min)) + min;
-}
+// No legacy day/night or derived impacts support
 
 // Determine current season based on date
 const getSeason = (date) => {
@@ -42,6 +39,17 @@ const getSeason = (date) => {
   if (month >= 9 && month <= 11) return "autumn";
   return "winter"; // December, January, February
 };
+
+// Helper: bias selection so earlier items are more likely
+function weightedIndex(rng, n, power = 2) {
+  if (n <= 0) return 0;
+  // u^power biases toward 0 as power increases
+  const u = rng();
+  const idx = Math.floor(Math.pow(u, power) * n);
+  return Math.min(Math.max(idx, 0), n - 1);
+}
+
+// No derived impacts function
 
 const getWeatherForDate = (
   date,
@@ -69,26 +77,34 @@ const getWeatherForDate = (
   const seed = dateToSeed(date, regionId);
   const rng = seededRandom(seed);
 
-  // Generate day weather using seeded random
-  const dayConditionIndex = seededRandomInt(
-    rng,
-    0,
-    seasonData.dayConditions.length
-  );
-  const dayCondition = seasonData.dayConditions[dayConditionIndex];
+  // Require a single 'conditions' array only
+  if (
+    !Array.isArray(seasonData.conditions) ||
+    seasonData.conditions.length === 0
+  ) {
+    throw new Error(
+      `No weather conditions defined for season '${season}' in region: ${regionId}`
+    );
+  }
 
-  // Generate night weather using seeded random
-  const nightConditionIndex = seededRandomInt(
-    rng,
-    0,
-    seasonData.nightConditions.length
-  );
-  const nightCondition = seasonData.nightConditions[nightConditionIndex];
+  // Weighted pick: earlier items more likely
+  const conditionIdx = weightedIndex(rng, seasonData.conditions.length, 2);
+  const condition = seasonData.conditions[conditionIdx];
 
-  // Get mechanical impacts if they exist
-  const mechanicalImpacts = seasonData.mechanicalImpacts || {};
-  const dayMechanicalImpact = mechanicalImpacts[dayCondition] || null;
-  const nightMechanicalImpact = mechanicalImpacts[nightCondition] || null;
+  // Impacts: explicit mapping only (no derived fallback)
+  let impacts = [];
+  if (
+    seasonData.mechanicalImpacts &&
+    typeof seasonData.mechanicalImpacts === "object"
+  ) {
+    const mapped = seasonData.mechanicalImpacts[condition];
+    if (Array.isArray(mapped)) {
+      impacts = mapped.filter((s) => typeof s === "string" && s.trim());
+    } else if (typeof mapped === "string" && mapped.trim()) {
+      impacts = [mapped];
+    }
+  }
+  // impacts may be empty if not mapped
 
   // Format date
   const formattedDate = date.toLocaleDateString("en-US", {
@@ -103,16 +119,10 @@ const getWeatherForDate = (
 
   return {
     date: formattedDate,
-    dayOfWeek: dayOfWeek,
-    season: season,
-    day: {
-      condition: dayCondition,
-      mechanicalImpact: dayMechanicalImpact,
-    },
-    night: {
-      condition: nightCondition,
-      mechanicalImpact: nightMechanicalImpact,
-    },
+    dayOfWeek,
+    season,
+    condition,
+    impacts,
   };
 };
 

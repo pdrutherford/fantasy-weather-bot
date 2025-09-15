@@ -15,7 +15,7 @@ async function sendRegionalWeatherWebhook(regionId) {
     const regionConfig = getRegionConfig(regionId);
     logger.info(`Sending weather update for region: ${regionConfig.name}`);
 
-    // Get weather data for this region
+    // Get weather data for this region (single condition + impacts)
     const weather = getRegionalWeatherUpdate(regionConfig);
 
     // Build the weather message content
@@ -27,23 +27,15 @@ async function sendRegionalWeatherWebhook(regionId) {
       `**Season:** ${
         weather.season.charAt(0).toUpperCase() + weather.season.slice(1)
       }\n` +
-      `${getWeatherEmoji(weather.day.condition, false)} **Day:** ${
-        weather.day.condition
+      `${getWeatherEmoji(weather.condition, false)} **Weather:** ${
+        weather.condition
       }\n`;
 
-    // Add mechanical impact for day weather if it exists
-    if (weather.day.mechanicalImpact) {
-      messageContent += `⚠️ **Day Effect:** *${weather.day.mechanicalImpact}*\n`;
-    }
-
-    messageContent += `${getWeatherEmoji(
-      weather.night.condition,
-      true
-    )} **Night:** ${weather.night.condition}\n`;
-
-    // Add mechanical impact for night weather if it exists
-    if (weather.night.mechanicalImpact) {
-      messageContent += `⚠️ **Night Effect:** *${weather.night.mechanicalImpact}*\n`;
+    // Add mechanical impacts if any
+    if (Array.isArray(weather.impacts) && weather.impacts.length > 0) {
+      weather.impacts.forEach((impact) => {
+        messageContent += `⚠️ ${impact}\n`;
+      });
     }
 
     // Format the message for Discord webhook
